@@ -1,0 +1,15 @@
+/tracking/verbose 0
+/run/verbose 2
+#/process/eLoss/verbose 1
+/gps/particle proton
+/gps/energy 5 MeV
+/gps/direction 0 0 1
+/gps/pos/centre 0 0 -0.1 mm
+/process/em/fluo true
+/process/em/auger true
+/process/em/augerCascade true
+/process/em/deexcitationIgnoreCut true 
+/process/em/AddDNARegion World DNA_Opt0
+/run/initialize
+/run/beamOn 1
+

@@ -1,0 +1,21 @@
+/tracking/verbose 0
+/run/verbose 0
+
+/process/em/fluo true
+/process/em/auger true
+/process/em/augerCascade true
+/process/em/deexcitationIgnoreCut true 
+/process/em/AddDNARegion World DNA_Opt0
+
+/run/initialize
+
+
+
+/gun/particle alpha
+#/gun/ion 86 220
+/gun/energy 6.4046710 MeV
+/gun/position 0 0 0 mm 
+#/gun/direction iso
+
+/run/beamOn 1
+
