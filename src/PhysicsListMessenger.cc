@@ -14,6 +14,7 @@
 #include "G4EmDNAPhysics.hh"
 #include "G4DecayPhysics.hh"
 #include "G4RadioactiveDecayPhysics.hh"
+#include "G4StepLimiterPhysics.hh"
 
 
 PhysicsListMessenger::PhysicsListMessenger(PhysicsList* physics_list)
@@ -48,11 +49,13 @@ void PhysicsListMessenger::SetNewValue(G4UIcommand* command, G4String value)
         if (value == "livermore")
         {
             physics_list_->AddPhysicsList(new G4EmLivermorePhysics());
+            physics_list_->AddPhysicsList(new G4StepLimiterPhysics());
         }
  
         else if (value == "penelope")
         {
             physics_list_->AddPhysicsList(new G4EmPenelopePhysics());
+            physics_list_->AddPhysicsList(new G4StepLimiterPhysics());
         }
  
         else if (value == "dna")

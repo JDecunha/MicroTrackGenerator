@@ -37,6 +37,7 @@
 #include "G4SystemOfUnits.hh"
 #include "G4Region.hh"
 #include "G4ProductionCuts.hh"
+#include "G4UserLimits.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -96,6 +97,13 @@ G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
       new G4VisAttributes(G4Colour(1.0,1.0,1.0)); //White
   worldVisAtt->SetVisibility(true);
   logicWorld->SetVisAttributes(worldVisAtt);
+
+  //Set the maximal step length for a track
+  //According to example B2 you can set this limit after the object is placed
+  G4UserLimits* steplengthlimiter = new G4UserLimits(1*CLHEP::um);
+
+  //apply the step length limit to the world
+  logicWorld->SetUserLimits(steplengthlimiter);
 
 
 
