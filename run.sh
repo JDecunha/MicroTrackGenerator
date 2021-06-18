@@ -1,1 +1,1 @@
-./build/microdosimetry -out output/co60_1cm_livermore -mac macros/co60_1cm.in
+./build/microdosimetry -out output/proton_livermore_test -mac macros/proton_200mev.in

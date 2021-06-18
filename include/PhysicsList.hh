@@ -16,12 +16,12 @@ class PhysicsList: public G4VModularPhysicsList
     ~PhysicsList();
 
   public:
-    void ConstructParticle();
+    //void ConstructParticle();
     //void ConstructProcess();
 
-    void AddPhysicsList(G4VPhysicsConstructor* physics_list);
+    //void AddPhysicsList(G4VPhysicsConstructor* physics_list);
 
   private:
-    PhysicsListMessenger* messenger;
+    //PhysicsListMessenger* messenger;
 };
 
