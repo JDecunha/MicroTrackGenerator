@@ -1,0 +1,15 @@
+/tracking/verbose 0
+/run/verbose 1
+
+/run/initialize
+
+#spectra information
+/gps/particle proton
+/gps/pos/type Point
+/gps/ang/type beam1d
+/gps/position 0 0 0 mm 
+
+/gps/ene/type Mono
+/gps/ene/mono 1 MeV
+
+/run/beamOn 1

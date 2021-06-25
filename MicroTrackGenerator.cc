@@ -1,38 +1,3 @@
-//
-// ********************************************************************
-// * License and Disclaimer                                           *
-// *                                                                  *
-// * The  Geant4 software  is  copyright of the Copyright Holders  of *
-// * the Geant4 Collaboration.  It is provided  under  the terms  and *
-// * conditions of the Geant4 Software License,  included in the file *
-// * LICENSE and available at  http://cern.ch/geant4/license .  These *
-// * include a list of copyright holders.                             *
-// *                                                                  *
-// * Neither the authors of this software system, nor their employing *
-// * institutes,nor the agencies providing financial support for this *
-// * work  make  any representation or  warranty, express or implied, *
-// * regarding  this  software system or assume any liability for its *
-// * use.  Please see the license in the file  LICENSE  and URL above *
-// * for the full disclaimer and the limitation of liability.         *
-// *                                                                  *
-// * This  code  implementation is the result of  the  scientific and *
-// * technical work of the GEANT4 collaboration.                      *
-// * By using,  copying,  modifying or  distributing the software (or *
-// * any work based  on the software)  you  agree  to acknowledge its *
-// * use  in  resulting  scientific  publications,  and indicate your *
-// * acceptance of all terms of the Geant4 Software license.          *
-// ********************************************************************
-//
-// This example is provided by the Geant4-DNA collaboration
-// Any report or published results obtained using the Geant4-DNA software
-// shall cite the following Geant4-DNA collaboration publication:
-// Med. Phys. 37 (2010) 4692-4708
-// The Geant4-DNA web site is available at http://geant4-dna.org
-//
-/// \file microdosimetry.cc
-/// \brief Implementation of the microdosimetry example
-//
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 #include "G4Types.hh"
 
 #ifdef G4MULTITHREADED
@@ -55,8 +20,6 @@
 #include "PhysicsList.hh"
 #include "CommandLineParser.hh"
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 using namespace G4DNAPARSER;
 CommandLineParser* parser(0);
 
@@ -64,14 +27,10 @@ void Parse(int& argc, char** argv);
 
 int main(int argc,char** argv)
 {
-  //////////
   // Parse options given in commandLine
-  //
   Parse(argc, argv);
 
-  //////////
   // Construct the run manager according to whether MT is activated or not
-  //
   Command* commandLine(0);
 
 #ifdef G4MULTITHREADED
@@ -121,8 +80,6 @@ int main(int argc,char** argv)
 
   G4UImanager* UImanager = G4UImanager::GetUIpointer();
   G4UIExecutive* ui(0);
-
-
 
   // interactive mode : define UI session
 
@@ -230,7 +187,7 @@ void Parse(int& argc, char** argv)
                      "Give a mac file to execute",
                      "macFile.mac");
 
-// You cann your own command, as for instance:
+// You can add your own command, as for instance:
 //  parser->AddCommand("-seed",
 //                     Command::WithOption,
 //                     "Give a seed value in argument to be tested", "seed");
@@ -261,9 +218,7 @@ void Parse(int& argc, char** argv)
                      "Output files",
                      exec);
 
-  //////////
   // If -h or --help is given in option : print help and exit
-  //
   if (parser->Parse(argc, argv) != 0) // help is being printed
   {
     // if you are using ROOT, create a TApplication in this condition in order
@@ -272,9 +227,7 @@ void Parse(int& argc, char** argv)
     std::exit(0);
   }
 
-  ///////////
   // Kill application if wrong argument in command line
-  //
   if (parser->CheckIfNotHandledOptionsExists(argc, argv))
   {
     // if you are using ROOT, you should initialise your TApplication

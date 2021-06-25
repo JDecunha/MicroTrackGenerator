@@ -1,37 +1,3 @@
-//
-// ********************************************************************
-// * License and Disclaimer                                           *
-// *                                                                  *
-// * The  Geant4 software  is  copyright of the Copyright Holders  of *
-// * the Geant4 Collaboration.  It is provided  under  the terms  and *
-// * conditions of the Geant4 Software License,  included in the file *
-// * LICENSE and available at  http://cern.ch/geant4/license .  These *
-// * include a list of copyright holders.                             *
-// *                                                                  *
-// * Neither the authors of this software system, nor their employing *
-// * institutes,nor the agencies providing financial support for this *
-// * work  make  any representation or  warranty, express or implied, *
-// * regarding  this  software system or assume any liability for its *
-// * use.  Please see the license in the file  LICENSE  and URL above *
-// * for the full disclaimer and the limitation of liability.         *
-// *                                                                  *
-// * This  code  implementation is the result of  the  scientific and *
-// * technical work of the GEANT4 collaboration.                      *
-// * By using,  copying,  modifying or  distributing the software (or *
-// * any work based  on the software)  you  agree  to acknowledge its *
-// * use  in  resulting  scientific  publications,  and indicate your *
-// * acceptance of all terms of the Geant4 Software license.          *
-// ********************************************************************
-//
-// This example is provided by the Geant4-DNA collaboration
-// Any report or published results obtained using the Geant4-DNA software 
-// shall cite the following Geant4-DNA collaboration publication:
-// Med. Phys. 37 (2010) 4692-4708
-// The Geant4-DNA web site is available at http://geant4-dna.org
-//
-/// \file RunAction.cc
-/// \brief Implementation of the RunAction class
-
 #include "RunAction.hh"
 #include "G4Run.hh"
 #include "G4ParticleDefinition.hh"
@@ -40,22 +6,20 @@
 #include "G4Threading.hh"
 #include "CommandLineParser.hh"
 
+//Root headers
+#include"TROOT.h"
+#include "TTree.h"
+
 using namespace G4DNAPARSER;
 
 void PrintNParticles(std::map<const G4ParticleDefinition*, int>& container);
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 RunAction::RunAction() : G4UserRunAction(),
       fInitialized(0), fDebug(false)
 {}
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 RunAction::~RunAction()
 {}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void RunAction::BeginOfRunAction(const G4Run* run)
 {
@@ -78,8 +42,6 @@ void RunAction::BeginOfRunAction(const G4Run* run)
   else BeginWorker(run);
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 void RunAction::EndOfRunAction(const G4Run* run)
 {
 
@@ -96,8 +58,6 @@ void RunAction::EndOfRunAction(const G4Run* run)
   }
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 void RunAction::BeginMaster(const G4Run* run)
 {
   if(fDebug)
@@ -110,9 +70,10 @@ void RunAction::BeginMaster(const G4Run* run)
     PrintRunInfo(run);
     G4cout << "===================================" << G4endl;
   }
+  ROOT::EnableThreadSafety(); //make root thread safe for each of the created subprocesses
+  //I may not need this since my implementation is already thread safe
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void RunAction::BeginWorker(const G4Run* run)
 {
@@ -128,13 +89,10 @@ void RunAction::BeginWorker(const G4Run* run)
   CreateHistogram();
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 void RunAction::EndMaster(const G4Run*)
 {
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void RunAction::EndWorker(const G4Run* run)
 {
@@ -147,7 +105,7 @@ void RunAction::EndWorker(const G4Run* run)
   }
 
   G4int nofEvents = run->GetNumberOfEvent();
-  if ( nofEvents == 0 )
+  if (nofEvents == 0 )
   {
     if(fDebug)
     {
@@ -167,33 +125,8 @@ void RunAction::EndWorker(const G4Run* run)
   //
   delete G4AnalysisManager::Instance();
 
-  ///
-  /// When there used to be a tracking action this printed out particles created in each region
-  ///
-  ///////////////
-  // Printouts
-  //
-  /*
-  std::map<const G4ParticleDefinition*, int>&
-  particlesCreatedInWorld = fpTrackingAction->GetNParticlesCreatedInWorld();
-
-  G4cout << "Number and type of particles created outside region \"Target\" :"
-         << G4endl;
-
-  PrintNParticles(particlesCreatedInWorld);
-
-  G4cout << "_______________________" << G4endl;
-
-  std::map<const G4ParticleDefinition*, int>&
-  particlesCreatedInTarget = fpTrackingAction->GetNParticlesCreatedInTarget();
-
-  G4cout << "Number and type of particles created in region \"Target\" :"
-         << G4endl;
-
-  PrintNParticles(particlesCreatedInTarget);*/
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void RunAction::InitializeWorker(const G4Run*)
 {
@@ -218,7 +151,10 @@ void RunAction::InitializeWorker(const G4Run*)
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+void RunAction::CreateTTree()
+{
+  
+}
 void RunAction::CreateHistogram()
 {
   // Book histograms, ntuple

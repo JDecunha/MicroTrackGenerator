@@ -1,8 +1,5 @@
-// SIM //
 #include "PhysicsList.hh"
 #include "G4EmDNAPhysics.hh"
-
-// GEANT4 //
 #include "G4SystemOfUnits.hh"
 #include "G4VPhysicsConstructor.hh"
 #include "G4RunManager.hh"
