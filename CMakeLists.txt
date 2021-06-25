@@ -1,60 +1,36 @@
-#----------------------------------------------------------------------------
-# Setup the project
-cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
-project(microdosimetry)
-
-#----------------------------------------------------------------------------
-# Find Geant4 package, activating all available UI and Vis drivers by default
-# You can set WITH_GEANT4_UIVIS to OFF via the command line or ccmake/cmake-gui
-# to build a batch mode only executable
-#
+cmake_minimum_required(VERSION 3.3 FATAL_ERROR)
+project(MicroTrackGenerator VERSION 1.0.0)
 option(WITH_GEANT4_UIVIS "Build example with Geant4 UI and Vis drivers" ON)
+
+#Find Geant4
 if(WITH_GEANT4_UIVIS)
   find_package(Geant4 REQUIRED ui_all vis_all)
 else()
   find_package(Geant4 REQUIRED)
 endif()
 
-#----------------------------------------------------------------------------
-# Setup Geant4 include directories and compile definitions
-#
+#include the Geant4 CMakeLists
 include(${Geant4_USE_FILE})
 
-#----------------------------------------------------------------------------
-# Locate sources and headers for this project
-#
-include_directories(${PROJECT_SOURCE_DIR}/include 
-                    ${Geant4_INCLUDE_DIR})
+#search for other potential CMakeLists
+include_directories(${PROJECT_SOURCE_DIR}/include ${Geant4_INCLUDE_DIR})
+
+#Find ROOT
+find_package(ROOT 6.24 CONFIG REQUIRED)
+
+#include the ROOT CMakelists which defines $ROOT_LIBRARIES
+include("${ROOT_USE_FILE}")
+
+#Identify src and header files
 file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cc)
 file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
 
-#----------------------------------------------------------------------------
-# Add the executable, and link it to the Geant4 libraries
-#
-add_executable(microdosimetry microdosimetry.cc ${sources} ${headers})
-target_link_libraries(microdosimetry ${Geant4_LIBRARIES} )
+#add our executable, which consists of main file, source files, and headers
+add_executable(MicroTrackGenerator MicroTrackGenerator.cc ${sources} ${headers})
 
-#----------------------------------------------------------------------------
-# Copy all scripts to the build directory, i.e. the directory in which we
-# build microdosimetry. This is so that we can run the executable directly because it
-# relies on these scripts being in the current working directory.
-#
-file(GLOB MAC_FILES ${PROJECT_SOURCE_DIR}/*.mac 
-                    ${PROJECT_SOURCE_DIR}/*.in
-                    ${PROJECT_SOURCE_DIR}/*.C
-                    ${PROJECT_SOURCE_DIR}/README
-                    )
+#Link executable with Geant and ROOT Libraries
+target_link_libraries(MicroTrackGenerator ${Geant4_LIBRARIES} ${ROOT_LIBRARIES})
 
-foreach(_script ${MAC_FILES})
-  configure_file(
-    ${_script}
-    ${PROJECT_BINARY_DIR}/.
-    COPYONLY
-    )
-endforeach()
-
-#----------------------------------------------------------------------------
-# Install the executable to 'bin' directory under CMAKE_INSTALL_PREFIX
-#
-install(TARGETS microdosimetry DESTINATION bin)
+#Install the executable to 'bin' directory under CMAKE_INSTALL_PREFIX
+install(TARGETS MicroTrackGenerator DESTINATION bin)
 

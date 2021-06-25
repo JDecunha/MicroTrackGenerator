@@ -109,8 +109,8 @@ int main(int argc,char** argv)
   runManager->SetUserInitialization(new ActionInitialization());
 
   // Initialize G4 kernel
-  //runManager->Initialize(); 
-  ////Now we initialize the kernel in the macro file. Otherwise you can't call the pre-initialization commands in the macro
+  //runManager->Initialize();  
+  //Now we initialize the kernel in the macro file. Otherwise you can't call the pre-initialization commands in the macro
 
   // Initialize visualization
 

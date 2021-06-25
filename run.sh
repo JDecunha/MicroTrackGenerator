@@ -1,1 +1,1 @@
-./build/microdosimetry -out output/proton_livermore_test -mac macros/proton_200mev.in
+./build/MicroTrackGenerator -out output/proton_dna_test -mac macros/proton_100mev.in

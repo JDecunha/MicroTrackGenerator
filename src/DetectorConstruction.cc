@@ -79,7 +79,7 @@ void DetectorConstruction::DefineMaterials()
 G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
 {
   // Create a world, completely vanilla
-  G4VSolid* solidWorld = new G4Sphere("World", 0.*CLHEP::cm, 1.*CLHEP::cm, 0.*CLHEP::deg, 360.*CLHEP::deg, 0.*CLHEP::deg, 180.*CLHEP::deg);
+  G4VSolid* solidWorld = new G4Sphere("World", 0.*CLHEP::cm, 1000.*CLHEP::cm, 0.*CLHEP::deg, 360.*CLHEP::deg, 0.*CLHEP::deg, 180.*CLHEP::deg);
 
   G4LogicalVolume* logicWorld = new G4LogicalVolume(solidWorld,  //its solid
                                     fpWaterMaterial,  //its material
@@ -100,10 +100,10 @@ G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
 
   //Set the maximal step length for a track
   //According to example B2 you can set this limit after the object is placed
-  G4UserLimits* steplengthlimiter = new G4UserLimits(1*CLHEP::um);
+  //G4UserLimits* steplengthlimiter = new G4UserLimits(1*CLHEP::um);
 
   //apply the step length limit to the world
-  logicWorld->SetUserLimits(steplengthlimiter);
+  //logicWorld->SetUserLimits(steplengthlimiter);
 
 
 
