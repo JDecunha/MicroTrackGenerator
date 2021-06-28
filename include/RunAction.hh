@@ -2,15 +2,14 @@
 #define RunAction_h 1
 
 #include "G4UserRunAction.hh"
+#include "SteppingAction.hh"
+#include "TFile.h"
+#include "TTree.h"
 
 #include "globals.hh"
 #include <iostream>
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
-
 class G4Run;
-
-class TrackingAction;
 
 class RunAction : public G4UserRunAction
 {
@@ -24,36 +23,17 @@ public:
 
 private:
 
-  /////////////////
-  // Histogramming
-  //
-  void CreateHistogram();
-  void CreateTTree();
-  void WriteHistogram();
+  void CreateTFile();
+  void WriteTFileHeader();
 
-  /////////////////
-  // Worker
-  //
   void BeginMaster(const G4Run*);
   void EndMaster(const G4Run*);
 
-  /////////////////
-  // Worker
-  //
-  void InitializeWorker(const G4Run*);
   void BeginWorker(const G4Run*);
   void EndWorker(const G4Run*);
 
-  /////////////////
-  // Print Info
-  //
-  void PrintRunInfo(const G4Run* run);
-
-  /////////////////
-  // Attributes
-  //
-  bool fInitialized;
-  bool fDebug;
-
+  SteppingAction *pSteppingAction;
+  //Pointer to eventaction goes here later
+  TFile *pTrackOutputFile;
 };
 #endif

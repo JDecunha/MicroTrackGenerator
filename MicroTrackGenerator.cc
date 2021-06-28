@@ -33,6 +33,10 @@ int main(int argc,char** argv)
   // Construct the run manager according to whether MT is activated or not
   Command* commandLine(0);
 
+  //Should put something up here to set the random seed
+  //See Sergio's post. Says I can set a single seed before MTRunManager
+  //is created https://geant4-forum.web.cern.ch/t/different-random-seeds-but-same-results/324
+
 #ifdef G4MULTITHREADED
   G4MTRunManager* runManager= new G4MTRunManager;
   if ((commandLine = parser->GetCommandIfActive("-mt")))

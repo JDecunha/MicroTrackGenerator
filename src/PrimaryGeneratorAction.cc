@@ -1,9 +1,4 @@
-// SIM //
 #include "PrimaryGeneratorAction.hh"
-
-// GEANT4 //
-#include "G4GeneralParticleSource.hh"
-
 
 PrimaryGeneratorAction::PrimaryGeneratorAction()
 {
@@ -22,3 +17,12 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event)
     gun->GeneratePrimaryVertex(event);
 }
 
+G4String PrimaryGeneratorAction::GetPrimaryName()
+{
+	return gun->GetParticleDefinition()->GetParticleName();
+}
+
+G4double PrimaryGeneratorAction::GetPrimaryEnergy()
+{
+	return gun->GetParticleEnergy();
+}

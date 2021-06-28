@@ -12,4 +12,4 @@
 /gps/ene/type Mono
 /gps/ene/mono 1 MeV
 
-/run/beamOn 1
+/run/beamOn 4
