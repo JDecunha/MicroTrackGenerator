@@ -3,6 +3,7 @@
 
 #include "G4UserRunAction.hh"
 #include "SteppingAction.hh"
+#include "PrimaryGeneratorAction.hh"
 #include "TFile.h"
 #include "TTree.h"
 
@@ -24,7 +25,7 @@ public:
 private:
 
   void CreateTFile();
-  void WriteTFileHeader();
+  void WriteTFileInformationFields();
 
   void BeginMaster(const G4Run*);
   void EndMaster(const G4Run*);
@@ -32,6 +33,7 @@ private:
   void BeginWorker(const G4Run*);
   void EndWorker(const G4Run*);
 
+  PrimaryGeneratorAction *pPrimaryGeneratorAction;
   SteppingAction *pSteppingAction;
   //Pointer to eventaction goes here later
   TFile *pTrackOutputFile;

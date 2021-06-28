@@ -60,7 +60,8 @@ void RunAction::EndMaster(const G4Run* run)
 
 void RunAction::BeginWorker(const G4Run* run)
 {
-  CreateTFile();
+  CreateTFile(); //Create the output TFile. Then instruct stepping and event action to initialize
+  WriteTFileInformationFields();
 
   (void)run; //Silence the unused parameter warning
 }
@@ -105,6 +106,17 @@ void RunAction::CreateTFile()
   //The file has been created so we can instruct the SteppingAction to initialize the TTree
   pSteppingAction = (SteppingAction*)G4RunManager::GetRunManager()->GetUserSteppingAction();
   pSteppingAction->InitializeTTree();
+}
 
+void RunAction::WriteTFileInformationFields()
+{
+  //Get primary generator action pointer
+  pPrimaryGeneratorAction = (PrimaryGeneratorAction*)G4RunManager::GetRunManager()->GetUserPrimaryGeneratorAction();
+  //Pull properties about primary particles
+  TNamed primaryParticle = TNamed("Primary particle",pPrimaryGeneratorAction->GetPrimaryName());
+  TNamed primaryEnergy = TNamed("Primary energy",std::to_string(pPrimaryGeneratorAction->GetPrimaryEnergy()));
+  //Write properties to the currently open TFile
+  primaryParticle.Write();
+  primaryEnergy.Write();
 }
 

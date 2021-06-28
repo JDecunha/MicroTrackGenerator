@@ -1,4 +1,5 @@
 #include "PrimaryGeneratorAction.hh"
+#include "G4SystemOfUnits.hh"
 
 PrimaryGeneratorAction::PrimaryGeneratorAction()
 {
@@ -24,5 +25,5 @@ G4String PrimaryGeneratorAction::GetPrimaryName()
 
 G4double PrimaryGeneratorAction::GetPrimaryEnergy()
 {
-	return gun->GetParticleEnergy();
+	return gun->GetParticleEnergy()/MeV;
 }

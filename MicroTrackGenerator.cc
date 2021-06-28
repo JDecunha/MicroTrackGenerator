@@ -50,10 +50,6 @@ int main(int argc,char** argv)
     {
      nThreads = G4UIcommand::ConvertToInt(commandLine->GetOption());
     }
-    G4cout << "===== Microdosimetry is started with "
-       << runManager->GetNumberOfThreads()
-       << " threads =====" << G4endl;
-
     runManager->SetNumberOfThreads(nThreads);
   }
 #else
@@ -61,19 +57,16 @@ int main(int argc,char** argv)
 #endif
 
   // Set mandatory user initialization classes
-
   DetectorConstruction* detector = new DetectorConstruction;
   runManager->SetUserInitialization(detector);
 
   runManager->SetUserInitialization(new PhysicsList);
 
   // User action initialization
-
   runManager->SetUserInitialization(new ActionInitialization());
 
   // Initialize G4 kernel
-  //runManager->Initialize();  
-  //Now we initialize the kernel in the macro file. Otherwise you can't call the pre-initialization commands in the macro
+  runManager->Initialize();  
 
   // Initialize visualization
 
@@ -171,8 +164,6 @@ void GetNameAndPathOfExecutable(char** argv,
   path = aux.substr(0, pos + 1);
   executable = aux.substr(pos + 1);
 }
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void Parse(int& argc, char** argv)
 {
