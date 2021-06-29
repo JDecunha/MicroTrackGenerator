@@ -1,30 +1,43 @@
 #ifndef SteppingAction_h
 #define SteppingAction_h 1
 
+//Geant4
 #include "G4Types.hh"
 #include "G4SteppingManager.hh"
-#include "G4UserSteppingAction.hh"
-#include "TFile.h"
+//ROOT
 #include "TTree.h"
+//MicroTrackGenerator
+#include "G4UserSteppingAction.hh"
 
 class RunAction;
+class EventAction;
 
 class SteppingAction : public G4UserSteppingAction
 {
 	public:
+		
 	  SteppingAction();
 	  ~SteppingAction();
 	  
 	  void UserSteppingAction(const G4Step*);
 
 	private:
+
+		friend class RunAction;
+		friend class EventAction;
+
 		void InitializeTTree();
+		G4long ResetEdepsThisEvent();
 
 		TTree *pTrackOutputTree;
-		G4double *x,*y,*z,*edep; //We need these as pointers, so we can add them to the heap and have the Tree point there
+
+		//Variables needed to populate the TTrees
 		G4StepPoint* preStep;
-		G4bool fTTreeInitialized;
-		friend class RunAction;
+		G4double x,y,z,edep; 
+		G4long edepsThisEvent;
+
+		//Flags
+		G4bool fTTreeInitialized;	
 };
 
 #endif

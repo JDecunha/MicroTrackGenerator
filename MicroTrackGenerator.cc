@@ -27,6 +27,11 @@ void Parse(int& argc, char** argv);
 
 int main(int argc,char** argv)
 {
+
+  G4Random::setTheSeed(3); //I've verified that setting the seed this way works for multithreading,
+  //by looking at number of edeps at end of event action in each thread. 
+  //Sergio confirms this works too: https://geant4-forum.web.cern.ch/t/different-random-seeds-but-same-results/324
+
   // Parse options given in commandLine
   Parse(argc, argv);
 

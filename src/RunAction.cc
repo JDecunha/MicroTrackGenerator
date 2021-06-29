@@ -15,11 +15,9 @@
 
 using namespace G4DNAPARSER;
 
-RunAction::RunAction() : G4UserRunAction()
-{}
+RunAction::RunAction() : G4UserRunAction() { }
 
-RunAction::~RunAction()
-{}
+RunAction::~RunAction() { }
 
 void RunAction::BeginOfRunAction(const G4Run* run)
 {
@@ -46,32 +44,23 @@ void RunAction::EndOfRunAction(const G4Run* run)
   }
 }
 
-void RunAction::BeginMaster(const G4Run* run)
+void RunAction::BeginMaster(const G4Run*)
 {
   ROOT::EnableThreadSafety(); //make ROOT thread safe from the main thread. ROOT will crash without this.
-
-  (void)run; //Silence the unused parameter warning
 }
-void RunAction::EndMaster(const G4Run* run) 
+void RunAction::EndMaster(const G4Run*) { }
+
+void RunAction::BeginWorker(const G4Run*)
 {
-  (void)run; //Silence the unused parameter warning
+  CreateTFile(); //Create the output TFile. 
+  InitializeTTrees(); //Instruct stepping and event action to initialize
+  WriteTFileInformationFields(); //Write information fields to the file
 }
-
-
-void RunAction::BeginWorker(const G4Run* run)
-{
-  CreateTFile(); //Create the output TFile. Then instruct stepping and event action to initialize
-  WriteTFileInformationFields();
-
-  (void)run; //Silence the unused parameter warning
-}
-void RunAction::EndWorker(const G4Run* run)
+void RunAction::EndWorker(const G4Run*)
 {
   pTrackOutputFile->Write();
   pTrackOutputFile->Close();
   delete pTrackOutputFile;
-
-  (void)run; //Silence the unused parameter warning
 }
 
 void RunAction::CreateTFile()
@@ -102,19 +91,26 @@ void RunAction::CreateTFile()
   //Create a thread local File
   //List of compression settings contained here: https://root.cern.ch/doc/master/structROOT_1_1RCompressionSetting_1_1EDefaults.html#a47faae5d3e4bb7b1941775f764730596aa27e7f29058cc84d676f20aea9b86c30
   pTrackOutputFile = new TFile(fileName,"RECREATE");
+}
 
-  //The file has been created so we can instruct the SteppingAction to initialize the TTree
+void RunAction::InitializeTTrees()
+{
+  //The TFile has been created so we can instruct the SteppingAction and EvenctAction to initialize their TTrees
   pSteppingAction = (SteppingAction*)G4RunManager::GetRunManager()->GetUserSteppingAction();
+  pEventAction = (EventAction*)G4RunManager::GetRunManager()->GetUserEventAction();
   pSteppingAction->InitializeTTree();
+  pEventAction->InitializeEventIndexTree();
 }
 
 void RunAction::WriteTFileInformationFields()
 {
   //Get primary generator action pointer
   pPrimaryGeneratorAction = (PrimaryGeneratorAction*)G4RunManager::GetRunManager()->GetUserPrimaryGeneratorAction();
+
   //Pull properties about primary particles
   TNamed primaryParticle = TNamed("Primary particle",pPrimaryGeneratorAction->GetPrimaryName());
   TNamed primaryEnergy = TNamed("Primary energy",std::to_string(pPrimaryGeneratorAction->GetPrimaryEnergy()));
+
   //Write properties to the currently open TFile
   primaryParticle.Write();
   primaryEnergy.Write();

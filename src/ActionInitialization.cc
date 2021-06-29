@@ -1,6 +1,7 @@
 #include "ActionInitialization.hh"
 #include "PrimaryGeneratorAction.hh"
 #include "RunAction.hh"
+#include "EventAction.hh"
 #include "SteppingAction.hh"
 #include "DetectorConstruction.hh"
 #include "G4RunManager.hh"
@@ -26,5 +27,6 @@ void ActionInitialization::Build() const
   SetUserAction(runAction);
 
   SetUserAction(new SteppingAction());
+  SetUserAction(new EventAction());
 }  
 
