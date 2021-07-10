@@ -1,8 +1,13 @@
+#CMakeLists file for MicroTrackGenerator
 cmake_minimum_required(VERSION 3.3 FATAL_ERROR)
-project(MicroTrackGenerator VERSION 1.0.0)
-option(WITH_GEANT4_UIVIS "Build example with Geant4 UI and Vis drivers" ON)
 
-#Find Geant4
+project(MicroTrackGenerator VERSION 1.0.0)
+
+###
+### Configure Geant4 libraries
+###
+
+option(WITH_GEANT4_UIVIS "Build example with Geant4 UI and Vis drivers" ON)
 if(WITH_GEANT4_UIVIS)
   find_package(Geant4 REQUIRED ui_all vis_all)
 else()
@@ -15,11 +20,18 @@ include(${Geant4_USE_FILE})
 #search for other potential CMakeLists
 include_directories(${PROJECT_SOURCE_DIR}/include ${Geant4_INCLUDE_DIR})
 
-#Find ROOT
+###
+### Configure ROOT libraries
+###
+
 find_package(ROOT 6.24 CONFIG REQUIRED)
 
 #include the ROOT CMakelists which defines $ROOT_LIBRARIES
 include("${ROOT_USE_FILE}")
+
+###
+### Link MicroTrackGenerator with libraries
+###
 
 #Identify src and header files
 file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cc)

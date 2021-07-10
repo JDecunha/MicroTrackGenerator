@@ -28,19 +28,13 @@ void Parse(int& argc, char** argv);
 int main(int argc,char** argv)
 {
 
-  G4Random::setTheSeed(3); //I've verified that setting the seed this way works for multithreading,
-  //by looking at number of edeps at end of event action in each thread. 
-  //Sergio confirms this works too: https://geant4-forum.web.cern.ch/t/different-random-seeds-but-same-results/324
-
   // Parse options given in commandLine
   Parse(argc, argv);
-
-  // Construct the run manager according to whether MT is activated or not
   Command* commandLine(0);
 
-  //Should put something up here to set the random seed
-  //See Sergio's post. Says I can set a single seed before MTRunManager
-  //is created https://geant4-forum.web.cern.ch/t/different-random-seeds-but-same-results/324
+  G4Random::setTheSeed(stol(parser->GetCommandIfActive("-seed")->GetOption())); //I've verified that setting the seed this way works for multithreading,
+  //by looking at number of edeps at end of event action in each thread. 
+  //Sergio confirms this works too: https://geant4-forum.web.cern.ch/t/different-random-seeds-but-same-results/324
 
 #ifdef G4MULTITHREADED
   G4MTRunManager* runManager= new G4MTRunManager;
@@ -70,21 +64,15 @@ int main(int argc,char** argv)
   // User action initialization
   runManager->SetUserInitialization(new ActionInitialization());
 
-  // Initialize G4 kernel
-  runManager->Initialize();  
-
   // Initialize visualization
-
   G4VisManager* visManager = new G4VisExecutive;
   visManager->Initialize();
 
   // Get the pointer to the User Interface manager
-
   G4UImanager* UImanager = G4UImanager::GetUIpointer();
   G4UIExecutive* ui(0);
 
   // interactive mode : define UI session
-
   if ((commandLine = parser->GetCommandIfActive("-gui")))
   {
     ui = new G4UIExecutive(argc, argv,
@@ -150,7 +138,7 @@ int main(int argc,char** argv)
   return 0;
 }
 
-// This just gets the path to the executable I think to have a default output filename if you don't input one manually
+// This just gets the path to the executable, mostly to have a default output filename if you don't input one manually
 void GetNameAndPathOfExecutable(char** argv,
                                 G4String& executable,
                                 G4String& path)
@@ -186,6 +174,11 @@ void Parse(int& argc, char** argv)
                      Command::WithOption,
                      "Give a mac file to execute",
                      "macFile.mac");
+
+  parser->AddCommand("-seed",
+                   Command::WithOption,
+                   "Provide a seed for the random engine",
+                   "1");
 
 // You can add your own command, as for instance:
 //  parser->AddCommand("-seed",

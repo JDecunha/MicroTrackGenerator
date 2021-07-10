@@ -33,25 +33,25 @@
 /// \brief Implementation of the DetectorConstruction class
 
 #include "DetectorConstruction.hh"
+#include "DetectorConstructionMessenger.hh"
 
 #include "G4SystemOfUnits.hh"
 #include "G4Region.hh"
 #include "G4ProductionCuts.hh"
 #include "G4UserLimits.hh"
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 DetectorConstruction::DetectorConstruction()
 :G4VUserDetectorConstruction(),
  fpWaterMaterial(0)
-{}  
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+{
+  pMessenger = new DetectorConstructionMessenger(this);
+  sideLength = 0;
+}  
 
 DetectorConstruction::~DetectorConstruction()
-{}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+{
+  delete pMessenger;
+}
 
 G4VPhysicalVolume* DetectorConstruction::Construct()
 
@@ -60,33 +60,35 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   return ConstructDetector();
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 void DetectorConstruction::DefineMaterials()
 { 
-
   // Water is defined from NIST material database
   G4NistManager * man = G4NistManager::Instance();
   G4Material * H2O = man->FindOrBuildMaterial("G4_WATER");
-
-  // Default materials in setup.
   fpWaterMaterial = H2O;
-
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+void DetectorConstruction::SetSideLength(G4double sidelength)
+{
+  sideLength = sidelength;
+}
+
+G4double DetectorConstruction::GetSideLength()
+{
+  return sideLength;
+}
 
 G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
 {
-  // Create a world, completely vanilla
-  G4VSolid* solidWorld = new G4Sphere("World", 0.*CLHEP::cm, 1000.*CLHEP::cm, 0.*CLHEP::deg, 360.*CLHEP::deg, 0.*CLHEP::deg, 180.*CLHEP::deg);
+  // Create a voxel within which to confine the tracks
+  G4VSolid* solidWorld = new G4Box("World", sideLength/2,sideLength/2,sideLength/2);
 
   G4LogicalVolume* logicWorld = new G4LogicalVolume(solidWorld,  //its solid
                                     fpWaterMaterial,  //its material
                                     "World");    //its name
 
   G4VPhysicalVolume* physiWorld = new G4PVPlacement(0,      //no rotation
-                                  G4ThreeVector(),  //at (0,0,0)
+                                  G4ThreeVector(),  //at (0,0,0), a requirement of the mother volume
                                   "World",    //its name
                                   logicWorld,    //its logical volume
                                   0,      //its mother  volume
@@ -97,15 +99,6 @@ G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
       new G4VisAttributes(G4Colour(1.0,1.0,1.0)); //White
   worldVisAtt->SetVisibility(true);
   logicWorld->SetVisAttributes(worldVisAtt);
-
-  //Set the maximal step length for a track
-  //According to example B2 you can set this limit after the object is placed
-  //G4UserLimits* steplengthlimiter = new G4UserLimits(1*CLHEP::um);
-
-  //apply the step length limit to the world
-  //logicWorld->SetUserLimits(steplengthlimiter);
-
-
 
   return physiWorld;
 }

@@ -1,13 +1,20 @@
-/tracking/verbose 0
-/run/verbose 1
+#Set verbosity
+	/tracking/verbose 0
+	/run/verbose 1
+
+#geometry information
+	/geometry/voxelSideLength 3 mm
+
+#Initialize the run manager
+	/run/initialize
 
 #source information
-/gps/particle proton
-/gps/pos/type Point
-/gps/ang/type beam1d #beam will be oriented in -z direction by default
-/gps/position 0 0 0 mm 
+	/gps/particle proton
+	
+	#beam will be oriented in -z direction by default
+	/gps/ang/type beam1d 
+	
+	/gps/ene/type Mono
+	/gps/ene/mono 1 MeV
 
-/gps/ene/type Mono
-/gps/ene/mono 1 MeV
-
-/run/beamOn 4
+/run/beamOn 2

@@ -16,6 +16,7 @@ class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
     void GeneratePrimaries(G4Event* event);
     G4String GetPrimaryName();
     G4double GetPrimaryEnergy();
+    G4ThreeVector GetParticleOrigin();
 
   private:
     G4GeneralParticleSource* gun;

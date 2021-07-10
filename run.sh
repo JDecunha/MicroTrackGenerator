@@ -1,1 +1,1 @@
-./build/MicroTrackGenerator -out output/proton_dna_0_01mev -mac macros/proton_1mev.in
+./build/MicroTrackGenerator -out output/proton_1mev -mac macros/proton_1mev.in -seed 1
