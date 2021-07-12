@@ -18,7 +18,7 @@ endif()
 include(${Geant4_USE_FILE})
 
 #search for other potential CMakeLists
-include_directories(${PROJECT_SOURCE_DIR}/include ${Geant4_INCLUDE_DIR})
+include_directories(${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/extern/include ${Geant4_INCLUDE_DIR})
 
 ###
 ### Configure ROOT libraries
@@ -34,8 +34,8 @@ include("${ROOT_USE_FILE}")
 ###
 
 #Identify src and header files
-file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cc)
-file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
+file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh ${PROJECT_SOURCE_DIR}/extern/include/*.hh)
+file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cc ${PROJECT_SOURCE_DIR}/extern/src/*.cc)
 
 #add our executable, which consists of main file, source files, and headers
 add_executable(MicroTrackGenerator MicroTrackGenerator.cc ${sources} ${headers})

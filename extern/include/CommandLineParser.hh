@@ -42,8 +42,6 @@
 #include "globals.hh"
 #include <map>
 
-namespace G4DNAPARSER
-{
 class Command
 {
 public:
@@ -128,5 +126,4 @@ public:
     Command* GetCommandIfActive(const G4String &marker);
     G4bool WereOptionsSetup(){return fOptionsWereSetup;}
 };
-}
 #endif // PARSER_HH

@@ -13,12 +13,16 @@
 #include"TROOT.h"
 #include "TFile.h"
 #include "TTree.h"
-
-using namespace G4DNAPARSER;
-
-RunAction::RunAction() : G4UserRunAction() { }
+RunAction::RunAction() : G4UserRunAction() 
+{ 
+  G4RunManager::GetRunManager()->SetVerboseLevel(0);
+}
 
 RunAction::~RunAction() { }
+
+//
+// Beginning of run action
+//
 
 void RunAction::BeginOfRunAction(const G4Run* run)
 {
@@ -30,6 +34,22 @@ void RunAction::BeginOfRunAction(const G4Run* run)
   }
   else BeginWorker(run);
 }
+
+void RunAction::BeginMaster(const G4Run*)
+{
+  ROOT::EnableThreadSafety(); //make ROOT thread safe from the main thread. ROOT will crash without this.
+}
+
+void RunAction::BeginWorker(const G4Run*)
+{
+  CheckPrimaryGeneratorInitialized();
+  CreateTFile(); //Create the output TFile. 
+  InitializeTTrees(); //Instruct stepping and event action to initialize
+}
+
+//
+// End of run action
+//
 
 void RunAction::EndOfRunAction(const G4Run* run)
 {
@@ -45,17 +65,8 @@ void RunAction::EndOfRunAction(const G4Run* run)
   }
 }
 
-void RunAction::BeginMaster(const G4Run*)
-{
-  ROOT::EnableThreadSafety(); //make ROOT thread safe from the main thread. ROOT will crash without this.
-}
 void RunAction::EndMaster(const G4Run*) { }
 
-void RunAction::BeginWorker(const G4Run*)
-{
-  CreateTFile(); //Create the output TFile. 
-  InitializeTTrees(); //Instruct stepping and event action to initialize
-}
 void RunAction::EndWorker(const G4Run*)
 {
   pTrackOutputFile->Write();
@@ -64,8 +75,20 @@ void RunAction::EndWorker(const G4Run*)
   delete pTrackOutputFile;
 }
 
+//
+//Thread local worker functions
+//
+
+inline void RunAction::CheckPrimaryGeneratorInitialized()
+{
+  //Get primary generator action pointer and check if initialized (i.e. user messenger parameters have been set)
+  pPrimaryGeneratorAction = (PrimaryGeneratorAction*)G4RunManager::GetRunManager()->GetUserPrimaryGeneratorAction();
+  pPrimaryGeneratorAction->CheckInitialized();
+}
+
 void RunAction::CreateTFile()
 {
+  //Create an output TFile with appropriate name, random seed and thread ID are appended to name
   G4String fileName;
 
   //Create a thread local command line parser
@@ -102,24 +125,32 @@ void RunAction::WriteTFileInformationFields()
 
   //Get primary generator action pointer
   pPrimaryGeneratorAction = (PrimaryGeneratorAction*)G4RunManager::GetRunManager()->GetUserPrimaryGeneratorAction();
-  G4double sideLength = ((DetectorConstruction*)(G4RunManager::GetRunManager()->GetUserDetectorConstruction()))->GetSideLength();
 
   //Get and parse the particle origin
   G4ThreeVector particleOrigin = pPrimaryGeneratorAction->GetParticleOrigin();
-  G4String positionString = std::to_string(particleOrigin.getX()) + ", " + std::to_string(particleOrigin.getY()) + ", " + std::to_string(particleOrigin.getZ());
+  G4String originString = std::to_string(particleOrigin.getX()) + ", " + std::to_string(particleOrigin.getY()) + ", " + std::to_string(particleOrigin.getZ());
+
+  //Get and parse the particle initial direction
+  G4ThreeVector initialDirection = pPrimaryGeneratorAction->GetParticleInitialDirection();
+  G4String directionString = std::to_string(initialDirection.getX()) + ", " + std::to_string(initialDirection.getY()) + ", " + std::to_string(initialDirection.getZ());
+
+  //Get the side length
+  G4double sideLength = ((DetectorConstruction*)(G4RunManager::GetRunManager()->GetUserDetectorConstruction()))->GetSideLength();
 
   //Pull properties about primary particles
   TNamed tnPrimaryParticle = TNamed("Primary particle",pPrimaryGeneratorAction->GetPrimaryName());
   TNamed tnPrimaryEnergy = TNamed("Primary energy [MeV]",std::to_string(pPrimaryGeneratorAction->GetPrimaryEnergy()));
-  TNamed tnParticleOrigin = TNamed("Primary particle origin [mm]",positionString);
+  TNamed tnParticleOrigin = TNamed("Primary particle origin [mm]",originString);
+  TNamed tnParticleInitialDirection = TNamed("Primary particle direction [x,y,z]",directionString);
   TNamed tnVoxelSideLength = TNamed("Voxel side length [mm]",std::to_string(sideLength));
   TNamed tnRandomSeed = TNamed("Random seed",parser->GetCommandIfActive("-seed")->GetOption());
   TNamed tnRhreadID = TNamed("Thread ID",std::to_string(threadID));
 
   //Write properties to the currently open TFile
   tnPrimaryParticle.Write();
-  tnParticleOrigin.Write();
   tnPrimaryEnergy.Write();
+  tnParticleOrigin.Write();
+  tnParticleInitialDirection.Write();
   tnVoxelSideLength.Write();
   tnRandomSeed.Write();
   tnRhreadID.Write();
@@ -130,6 +161,7 @@ void RunAction::InitializeTTrees()
   //The TFile has been created so we can instruct the SteppingAction and EvenctAction to initialize their TTrees
   pSteppingAction = (SteppingAction*)G4RunManager::GetRunManager()->GetUserSteppingAction();
   pEventAction = (EventAction*)G4RunManager::GetRunManager()->GetUserEventAction();
+
   pSteppingAction->InitializeTTree();
   pEventAction->InitializeEventIndexTree();
 }

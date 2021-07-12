@@ -27,13 +27,11 @@ public:
 	G4double GetSideLength();
                          
 private:
-
-	void DefineMaterials();
 	G4VPhysicalVolume* ConstructDetector();    
 
     DetectorConstructionMessenger* pMessenger;
 	
-	G4Material*        fpWaterMaterial; 
 	G4double sideLength;
+	G4bool sideLengthInitialized;
 };
 #endif

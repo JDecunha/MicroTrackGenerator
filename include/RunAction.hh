@@ -25,6 +25,7 @@ public:
 
 private:
 
+  inline void CheckPrimaryGeneratorInitialized();
   void CreateTFile();
   void InitializeTTrees();
   void WriteTFileInformationFields();

@@ -40,7 +40,6 @@
 #include "CommandLineParser.hh"
 
 using namespace std;
-using namespace G4DNAPARSER;
 
 CommandLineParser* CommandLineParser::fpInstance(0);
 G4String Command::fNoOption = "NoOption";
