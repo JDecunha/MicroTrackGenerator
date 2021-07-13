@@ -68,13 +68,17 @@ The physics model Geant4DNA_Option2 is used for this application. Users are dire
 
 ### Random Seeding
 
-The seeding strategy is informed by a particular conversation on the Geant4 forums (https://geant4-forum.web.cern.ch/t/different-random-seeds-but-same-results/324/6). Sergio Losilla indicates that for a multithreaded application, a single seed can be used to uniquely seed the random number generators for each thread. We have performed some rudimentary verifications that this is the case and have observed that from a single seed on each thread unique tracks are generated.
+The seeding strategy is informed by a particular conversation on the Geant4 forums (https://geant4-forum.web.cern.ch/t/different-random-seeds-but-same-results/324/6). Sergio Losilla indicates that for a multithreaded application, a single seed can be used to uniquely seed the random number generators for each thread. I have performed some rudimentary verifications that this is the case and have observed that from a single seed on each thread unique tracks are generated.
 
 Assuming an appropriately recent version of the Geant4 toolkit is compiled against the MIMXMAX random number generator will be used by default. The MIXMAX generator is favored because a series of sequential random seeds can still yield uncorrelated random number generators.
 
 ### Output File Structure
 
+Output file struture is described in the diagram below (to be included). Each thread the software is run on generates a unique .root file. The file contains a series of headers describing properties of the primary particle and the simulation geometry. The "Tracks" TTree encondes x,y,z position in nanometers as well as energy deposited at that location in electron-Volts. The "Track index" TTree encodes a series of numbers which correspond with the entry number in the "Tracks" tree at which the last step of a given track was taken. The "Track index" TTree exists to speed up analysis times of the tracks as they don't have to be scanned through to determine where each track ends.
+
 ## Determining Microdosimetric Quantities from Track Library
+
+At this time I am developing software to take the tracks generated from MicroTrackGenerator and superimpose them on top of geometries in order to calculate microdosimetric quantities. This software will be shared in its own respository once I believe it is at a sufficient stage of development. This readme will be updated to direct you to that software once it has been released. 
 
 ## Software License
 
