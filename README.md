@@ -59,6 +59,8 @@ Specify the initial energy of the primary particle you create. Requires a value 
 
 ## Description
 
+MicroTrackGenerator has been developed to be as lightweight and simple as possible. Wherever possible end-user control has been removed to prevent the user from running the software in an inappropriate way. The purpose of the software is to generate a track library for a given source of ionizing radiation at a series of  energies. Individual components of the software are described below.
+
 ### Geometry
 
 ### Physics
