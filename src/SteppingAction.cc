@@ -20,7 +20,7 @@ void SteppingAction::InitializeTTree()
   if (fTTreeInitialized == false)
   {
     //Create the Tree
-    pTrackOutputTree = new TTree("tracks","Track information data");
+    pTrackOutputTree = new TTree("Tracks","Track information data");
 
     //Configure the branches
     pTrackOutputTree->Branch("x",&x,"x/D");
