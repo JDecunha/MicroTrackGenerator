@@ -7,7 +7,6 @@ The required software and libraries to compile MicroTrackGenerator include:
 3. CMake 3.3 or greater.
 4. Any required dependancies of Geant4 and CERN ROOT.
 
-
 MicroTrackGenerator is built by:
 ```
 #from MicroTrackGenerator directory, in BASH, on Linux
@@ -21,7 +20,7 @@ The software is run from the project's main directory. This can be accomplished 
 ```
 ./build/MicroTrackGenerator -out [path here] -mac [macro file path here] -seed [random seed here]
 ```
-Each of the above input parameters in the run script are mandatory and the software will through an exception if any of them are not specified. A full listing of the input parameters is given below.
+Each of the above input parameters in the run script are mandatory and the software will throw an exception if any of them are not specified. A full listing of the input parameters is given below.
 ### Input Parameters
 **Command Line**
 
@@ -65,9 +64,11 @@ All tracks originate from the center of the side of a cubic voxel whose size is 
 
 ### Physics
 
-The physics model Geant4DNA_Option2 is used for this application. Users are directed to the Geant4DNA collaboration's website (http://geant4-dna.in2p3.fr/styled-3/styled-8/index.html) and publications for data on the physics model. If you attempt to simulate a primary particle which is not modelled by the Geant4DNA model or does not fall within the specified energy range (i.e. electrons of 1 MeV or greater, protons of 100 MeV or greater) then the software will not export and track information.
+The physics model Geant4DNA_Option2 is used for this application. Users are directed to the Geant4DNA collaboration's website (http://geant4-dna.in2p3.fr/styled-3/styled-8/index.html) and publications for further information on the physics model. This physics model was chosen in order to determine the most accurate information for nanometer scale energy depositions from particles of ionizing radiation, while also spanning an energy range appropriate for medical applications. If you attempt to simulate a primary particle which is not modelled by the Geant4DNA model or does not fall within the specified energy range (i.e. electrons of 1 MeV or greater, protons of 100 MeV or greater) then the software will not export any track information.
 
 ### Random Seeding
+
+The seeding strategy is informed by a particular conversation on the Geant4 forums (https://geant4-forum.web.cern.ch/t/different-random-seeds-but-same-results/324/6). Sergio Losilla indicates that a single seed can be used to uniquely seed the random number generator for each of the thread processes. We have performed some rudimentary verifications that this is the case (from a single seed, we have found the tracks on each thread are unique). Assuming an appropriately recent version of the Geant4 toolkit is compiled against, then the MIMXMAX random number generator will be used by default. The MIXMAX generator is favored because a series of sequential random seeds can still yield independent random number generators.
 
 ### Output File Structure
 
