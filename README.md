@@ -54,6 +54,28 @@ Specify the name of the primary particle you would like to generate. Must be a n
 
 Specify the initial energy of the primary particle you create. Requires a value and associated energy unit.
 
+### Example macro file
+
+A macro file for MicroTrackGenerator to record 1 MeV proton tracks in a 3 mm cubic side length voxel is provided:
+```
+#Set verbosity
+	/tracking/verbose 0
+	/process/em/verbose 0
+	/run/verbose 1
+
+#geometry information
+	/geometry/voxelSideLength 3 mm
+
+#Initialize the run manager
+	/run/initialize
+
+#source information
+	/primary/type proton
+	/primary/energy 1 MeV
+
+/run/beamOn 2
+```
+
 ## Description
 
 MicroTrackGenerator has been developed to be as lightweight and simple as possible. Wherever possible end-user control has been removed to prevent the user from running the software in an inappropriate way. The purpose of the software is to generate a track library for a given source of ionizing radiation at a series of  energies. Individual components of the software are described below.
