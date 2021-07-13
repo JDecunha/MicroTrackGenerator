@@ -82,7 +82,11 @@ MicroTrackGenerator has been developed to be as lightweight and simple as possib
 
 ### Geometry
 
-All tracks originate from the center of the side of a cubic voxel whose size is specified by voxelSideLength. When any particle in the track reaches the edge of the voxel it is terminated. The initial momentum of all primary particles is fixed to be directed into the voxel. The rationale behind this is to prevent needless track information from being stored. For example, when performing voxel specific microdosimetry (i.e. determing microdosimetric parameters in each voxel of a patient) and a given particle is determined to be in the energy spectra for that voxel, only the portion of that particle's track which lies within that voxel will contribute to the microdosimetric spectra for that voxel. This being the case, if I am interested in the microdosimetric spectra for say a monoenergetic 100 MeV proton beam, I only need to save the portion of that 100 MeV track which lies within the 3x3x3 mm voxel and not the entire track. This saves storage space compared to recording the entire track length.
+All tracks originate from the center of the side of a cubic voxel whose size is specified by voxelSideLength. When any particle in the track reaches the edge of the voxel it is terminated. 
+
+<img src="/src/docs/Track_Voxel_Box.jpg"/>
+
+The initial momentum of all primary particles is fixed to be directed into the voxel. The rationale behind this is to prevent needless track information from being stored. For example, when performing voxel specific microdosimetry (i.e. determing microdosimetric parameters in each voxel of a patient) and a given particle is determined to be in the energy spectra for that voxel, only the portion of that particle's track which lies within that voxel will contribute to the microdosimetric spectra for that voxel. This being the case, if I am interested in the microdosimetric spectra for say a monoenergetic 100 MeV proton beam, I only need to save the portion of that 100 MeV track which lies within the 3x3x3 mm voxel and not the entire track. This saves storage space compared to recording the entire track length.
 
 ### Physics
 
