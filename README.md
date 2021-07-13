@@ -55,13 +55,13 @@ Specify the name of the primary particle you would like to generate. Must be a n
 
 Specify the initial energy of the primary particle you create. Requires a value and associated energy unit.
 
-
-
 ## Description
 
 MicroTrackGenerator has been developed to be as lightweight and simple as possible. Wherever possible end-user control has been removed to prevent the user from running the software in an inappropriate way. The purpose of the software is to generate a track library for a given source of ionizing radiation at a series of  energies. Individual components of the software are described below.
 
 ### Geometry
+
+All tracks originate from the center of the side of a cubic voxel whose size is specified by voxelSideLength. When any particle in the track reaches the edge of the voxel it is terminated. The rationale behind this is to prevent needless track information from being stored. For example, when performing voxel specific microdosimetry (i.e. determing microdosimetric parameters in each voxel of a patient) and a given particle is determined to be in the energy spectra for that voxel, only the portion of that particles track which lies within that voxel will contribute to the microdosimetric spectra for that voxel. This being the case, if I am interested in the microdosimetric spectra for say a monoenergetic 100 MeV proton beam, I only need to save the portion of that 100 MeV track which lies within the 3x3x3 mm voxel and not the entire track.
 
 ### Physics
 
