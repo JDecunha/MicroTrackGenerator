@@ -1,7 +1,14 @@
 # MicroTrackGenerator
 An application to calculate the trajectories and energy deposition events of tracks of ionizing radiation for uses in computational microdosimetry.
 ## Installation and Requirements
-MicroTrackGenerator requires the end user have a version of Geant4 which includes Geant4DNA_Option2 and CERN ROOT installed. Geant 10.7 or greater as well as ROOT 6.24 or greater are recommended. In order to link ROOT libraries with this software ROOT must have been built from source on the user's machine rather than installed from a binary otherwise this software will not compile. Additionally all of the libraries required for Geant4 and ROOT are required for this software as well. MicroTrackGenerator is built by:
+The required software and libraries to compile MicroTrackGenerator include:
+1. Geant4. A version which includes Geant4DNA_Option2 is required, 10.7 or greater is recommended.
+2. CERN ROOT 6.24 or greater. Must be built from source rather than installed from a binary.
+3. CMake 3.3 or greater.
+4. Any required dependancies of Geant4 and CERN ROOT.
+
+
+MicroTrackGenerator is built by:
 ```
 #from MicroTrackGenerator directory, in BASH, on Linux
 mkdir build
@@ -16,7 +23,7 @@ The software is run from the project's main directory. This can be accomplished 
 ```
 Each of the above input parameters in the run script are mandatory and the software will through an exception if any of them are not specified. A full listing of the input parameters is given below.
 ### Input Parameters
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Command Line**
+**Command Line**
 
 **-out:** (mandatory)
 
@@ -34,13 +41,20 @@ Specify the random seed for the simulation. The singular random seed is used to 
 
 Specify the number of threads you would like the simulation to run on. If your Geant4 installation has been built with G4Multithreaded enabled the minimum number of threads selectable are two. Available options are either an integer number or "NMAX" which will determine the maximal number of threads available on the system.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Macro File**
+**Macro File**
 
-**geometry/voxelSideLength [value] [unit]**
+**geometry/voxelSideLength [value] [unit]** (mandatory)
 
-**/primary/type [name]**
+Specify the side length of the cubic voxel within which the generated tracks are constrained. A value and length unit are required.
 
-**/primary/energy [value] [unit]**
+**/primary/type [name]** (mandatory)
+
+Specify the name of the primary particle you would like to generate. Must be a name of a particle available in the G4ParticleTable.
+
+**/primary/energy [value] [unit]** (mandatory)
+
+Specify the initial energy of the primary particle you create. Requires a value and associated energy unit.
+
 
 
 ## Description
