@@ -1,11 +1,10 @@
-#ifndef EventAction_h
-#define EventAction_h 1
+#pragma once
 
-#include "G4Types.hh"
 #include "G4UserEventAction.hh"
-#include "TTree.h"
+#include "G4Types.hh"
 
 class RunAction;
+class TTree;
 
 class EventAction : public G4UserEventAction
 {
@@ -29,4 +28,3 @@ class EventAction : public G4UserEventAction
 		G4bool fInitialized;
 };
 
-#endif

@@ -1,11 +1,10 @@
 #pragma once
 
+#include "G4UImessenger.hh"
+
 class DetectorConstruction;
 class G4UIdirectory;
 class G4UIcmdWithADoubleAndUnit;
-
-#include "G4UImessenger.hh"
-#include "G4Types.hh"
 
 class DetectorConstructionMessenger : public G4UImessenger
 {

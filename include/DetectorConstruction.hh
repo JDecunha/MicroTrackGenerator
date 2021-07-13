@@ -1,18 +1,9 @@
-#ifndef DetectorConstruction_h
-#define DetectorConstruction_h 1
-
-class DetectorConstructionMessenger;
+#pragma once
 
 #include "G4VUserDetectorConstruction.hh"
-#include "G4VPhysicalVolume.hh"
-#include "G4LogicalVolume.hh"
-#include "G4Box.hh"
-#include "G4Sphere.hh"
-#include "G4Material.hh"
-#include "G4NistManager.hh"
-#include "G4PVPlacement.hh"
-#include "G4UserLimits.hh"
-#include "G4VisAttributes.hh"
+
+class DetectorConstructionMessenger;
+class G4VPhysicalVolume;
 
 class DetectorConstruction : public G4VUserDetectorConstruction
 {
@@ -34,4 +25,4 @@ private:
 	G4double sideLength;
 	G4bool sideLengthInitialized;
 };
-#endif
+

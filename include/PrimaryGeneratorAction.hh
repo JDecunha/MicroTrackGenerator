@@ -1,13 +1,12 @@
 #pragma once
 
-class PrimaryGeneratorMessenger;
-
-// GEANT4 //
 #include "G4VUserPrimaryGeneratorAction.hh"
 #include "G4Types.hh"
 #include "G4String.hh"
-#include "G4ParticleGun.hh"
+#include "G4ThreeVector.hh"
 
+class G4ParticleGun;
+class PrimaryGeneratorMessenger;
 
 class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {

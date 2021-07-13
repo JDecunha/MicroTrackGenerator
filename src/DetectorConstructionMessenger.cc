@@ -1,13 +1,9 @@
-
-// SIM //
+//MicroTrackGenerator
 #include "DetectorConstruction.hh"
 #include "DetectorConstructionMessenger.hh"
-
-// GEANT4 //
+//Geant4
 #include "G4UIdirectory.hh"
 #include "G4UIcmdWithADoubleAndUnit.hh"
-
-
 
 DetectorConstructionMessenger::DetectorConstructionMessenger(DetectorConstruction* detector_construction) : pDetectorConstruction(detector_construction)
 {

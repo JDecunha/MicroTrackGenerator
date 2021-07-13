@@ -1,11 +1,10 @@
-// SIM //
+//MicroTrackGenerator
 #include "PrimaryGeneratorAction.hh"
 #include "PrimaryGeneratorMessenger.hh"
-// GEANT4 //
+//Geant4
 #include "G4UIdirectory.hh"
 #include "G4UIcmdWithADoubleAndUnit.hh"
 #include "G4UIcmdWithAString.hh"
-
 
 PrimaryGeneratorMessenger::PrimaryGeneratorMessenger(PrimaryGeneratorAction* primary_action) : pPrimaryGenerator(primary_action)
 {

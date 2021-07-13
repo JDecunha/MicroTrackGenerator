@@ -1,37 +1,36 @@
+//MicroTrackGenerator
+#include "ActionInitialization.hh"
+#include "DetectorConstruction.hh"
+#include "PhysicsList.hh"
+//Extern
+#include "CommandLineParser.hh"
+//Geant4
 #include "G4Types.hh"
-
+#include "G4UImanager.hh"
 #ifdef G4MULTITHREADED
   #include "G4MTRunManager.hh"
 #else
   #include "G4RunManager.hh"
 #endif
 
-#include "G4UImanager.hh"
-#include "G4UIExecutive.hh"
-#include "G4UIterminal.hh"
-#include "G4UItcsh.hh"
-#include "G4VisExecutive.hh"
-#ifdef G4UI_USE_QT
-#include "G4UIQt.hh"
-#endif
-
-#include "ActionInitialization.hh"
-#include "DetectorConstruction.hh"
-#include "PhysicsList.hh"
-#include "CommandLineParser.hh"
-
+//Global command line parser
 CommandLineParser* parser(0);
 
 //Definitions for functions in main
 void Parse(int& argc, char** argv);
+void CheckCommandLineInputs(Command* commandLine);
 
 //Implementation
 int main(int argc,char** argv)
 {
+  //Disable Geant4Backtrace signal handling to improve performance
+  G4Backtrace::DefaultSignals() = std::set<int>{};
 
   // Parse options given in commandLine
   Parse(argc, argv);
   Command* commandLine(0);
+  //Check that the required command line inputs have been given, if not throw fatal exception
+  CheckCommandLineInputs(commandLine);
 
   //I've verified that setting the seed this way works for multithreading,
   //by looking at number of edeps at end of event action in each thread. 
@@ -78,6 +77,58 @@ int main(int argc,char** argv)
   return 0;
 }
 
+void CheckCommandLineInputs(Command* commandLine)
+{
+  //If the input hasn't been given or the input is empty throw a fatal exception
+  
+  if ((commandLine = parser->GetCommandIfActive("-mac")))
+  {
+    if (commandLine->GetOption() == "")
+    {
+        G4ExceptionDescription description;
+        description << "Macro file not given. Set with -mac option at runtime" << G4endl;
+        G4Exception("MicroTrackGenerator::MicroTrackGenerator", "Macro file NDEF", FatalException, description, "");
+    }
+  }
+  else
+  {
+        G4ExceptionDescription description;
+        description << "Macro file not given. Set with -mac option at runtime" << G4endl;
+        G4Exception("MicroTrackGenerator::MicroTrackGenerator", "Macro file NDEF", FatalException, description, "");
+  }
+
+  if ((commandLine = parser->GetCommandIfActive("-out")))
+  {
+    if (commandLine->GetOption() == "")
+    {
+        G4ExceptionDescription description;
+        description << "Output filename not given. Set with -out option at runtime" << G4endl;
+        G4Exception("MicroTrackGenerator::MicroTrackGenerator", "Output filename NDEF", FatalException, description, "");
+    }
+  }
+  else
+  {
+      G4ExceptionDescription description;
+      description << "Output filename not given. Set with -out option at runtime" << G4endl;
+      G4Exception("MicroTrackGenerator::MicroTrackGenerator", "Output filename NDEF", FatalException, description, "");  
+  }
+
+  if ((commandLine = parser->GetCommandIfActive("-seed")))
+  {
+    if (commandLine->GetOption() == "")
+    {
+        G4ExceptionDescription description;
+        description << "Random seed not given. Set with -seed option at runtime" << G4endl;
+        G4Exception("MicroTrackGenerator::MicroTrackGenerator", "Random seed NDEF", FatalException, description, "");
+    }
+  }
+  else
+  {
+      G4ExceptionDescription description;
+      description << "Random seed not given. Set with -seed option at runtime" << G4endl;
+      G4Exception("MicroTrackGenerator::MicroTrackGenerator", "Random seed NDEF", FatalException, description, ""); 
+  }
+}
 
 void Parse(int& argc, char** argv)
 {

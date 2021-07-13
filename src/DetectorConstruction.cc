@@ -1,10 +1,14 @@
+//MicroTrackGenerator
 #include "DetectorConstruction.hh"
 #include "DetectorConstructionMessenger.hh"
-
+//Geant4
+#include "G4Material.hh"
+#include "G4NistManager.hh"
 #include "G4SystemOfUnits.hh"
-#include "G4Region.hh"
-#include "G4ProductionCuts.hh"
-#include "G4UserLimits.hh"
+#include "G4Box.hh"
+#include "G4LogicalVolume.hh"
+#include "G4VPhysicalVolume.hh"
+#include "G4PVPlacement.hh"
 
 DetectorConstruction::DetectorConstruction():G4VUserDetectorConstruction()
 {
@@ -63,9 +67,5 @@ G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
                                   false,      //no boolean operation
                                   0);      //copy number
   
-  G4VisAttributes* worldVisAtt = new G4VisAttributes(G4Colour(1.0,1.0,1.0)); //White
-  worldVisAtt->SetVisibility(true);
-  logicWorld->SetVisAttributes(worldVisAtt);
-
   return physiWorld;
 }

@@ -1,16 +1,12 @@
-#ifndef SteppingAction_h
-#define SteppingAction_h 1
+#pragma once
 
-//Geant4
-#include "G4Types.hh"
-#include "G4SteppingManager.hh"
-//ROOT
-#include "TTree.h"
-//MicroTrackGenerator
 #include "G4UserSteppingAction.hh"
+#include "G4Types.hh"
 
 class RunAction;
 class EventAction;
+class G4StepPoint;
+class TTree;
 
 class SteppingAction : public G4UserSteppingAction
 {
@@ -40,4 +36,3 @@ class SteppingAction : public G4UserSteppingAction
 		G4bool fTTreeInitialized;	
 };
 
-#endif

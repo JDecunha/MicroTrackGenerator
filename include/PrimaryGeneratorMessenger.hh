@@ -1,12 +1,12 @@
 #pragma once
 
+#include "G4UImessenger.hh"
+#include "G4Types.hh"
+
 class PrimaryGeneratorAction;
 class G4UIdirectory;
 class G4UIcmdWithADoubleAndUnit;
 class G4UIcmdWithAString;
-
-#include "G4UImessenger.hh"
-#include "G4Types.hh"
 
 class PrimaryGeneratorMessenger : public G4UImessenger
 {

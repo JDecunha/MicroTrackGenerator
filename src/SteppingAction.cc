@@ -1,6 +1,10 @@
+//MicroTrackGenerator
 #include "SteppingAction.hh"
+//ROOT
+#include "TTree.h"
+//Geant4
+#include "G4SteppingManager.hh"
 #include "G4SystemOfUnits.hh"
-
 
 SteppingAction::SteppingAction() : G4UserSteppingAction()
 {
@@ -39,6 +43,7 @@ void SteppingAction::InitializeTTree()
 
 void SteppingAction::UserSteppingAction(const G4Step* step)
 { 
+  //Save the positio and edep for every step
   preStep = step->GetPreStepPoint();
 
   if (step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()!="Transportation")

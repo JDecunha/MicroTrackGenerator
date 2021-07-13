@@ -1,9 +1,11 @@
-#include "PrimaryGeneratorAction.hh"
-#include "G4SystemOfUnits.hh"
+//MicroTrackGenerator
 #include "DetectorConstruction.hh"
+#include "PrimaryGeneratorAction.hh"
+#include "PrimaryGeneratorMessenger.hh"
+//Geant4
+#include "G4SystemOfUnits.hh"
 #include "G4RunManager.hh"
 #include "G4ParticleGun.hh"
-#include "PrimaryGeneratorMessenger.hh"
 #include "G4ParticleTable.hh"
 
 PrimaryGeneratorAction::PrimaryGeneratorAction()

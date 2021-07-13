@@ -1,17 +1,13 @@
-#ifndef RunAction_h
-#define RunAction_h 1
+#pragma once
 
 #include "G4UserRunAction.hh"
-#include "EventAction.hh"
-#include "SteppingAction.hh"
-#include "PrimaryGeneratorAction.hh"
-#include "TFile.h"
-#include "TTree.h"
-
-#include "globals.hh"
-#include <iostream>
 
 class G4Run;
+class TFile;
+class TTree;
+class EventAction;
+class SteppingAction;
+class PrimaryGeneratorAction;
 
 class RunAction : public G4UserRunAction
 {
@@ -36,12 +32,9 @@ private:
   void BeginWorker(const G4Run*);
   void EndWorker(const G4Run*);
 
-  
   TFile *pTrackOutputFile;
   
   PrimaryGeneratorAction *pPrimaryGeneratorAction;
   SteppingAction *pSteppingAction;
   EventAction *pEventAction;
-  
 };
-#endif

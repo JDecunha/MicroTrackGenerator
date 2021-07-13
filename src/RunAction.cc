@@ -1,23 +1,22 @@
 //MicroTrackGenerator
-#include "SteppingAction.hh"
 #include "DetectorConstruction.hh"
+#include "EventAction.hh"
+#include "PrimaryGeneratorAction.hh"
 #include "RunAction.hh"
+#include "SteppingAction.hh"
+//Extern
 #include "CommandLineParser.hh"
-#include "Analysis.hh"
+//ROOT
+#include"TROOT.h"
+#include "TFile.h"
+#include "TTree.h"
 //Geant4
 #include "G4Run.hh"
 #include "G4ParticleDefinition.hh"
 #include "G4RunManager.hh"
 #include "G4Threading.hh"
-//ROOT
-#include"TROOT.h"
-#include "TFile.h"
-#include "TTree.h"
-RunAction::RunAction() : G4UserRunAction() 
-{ 
-  G4RunManager::GetRunManager()->SetVerboseLevel(0);
-}
 
+RunAction::RunAction() : G4UserRunAction() { }
 RunAction::~RunAction() { }
 
 //

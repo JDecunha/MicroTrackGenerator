@@ -1,10 +1,8 @@
+//MicroTrackGenerator
 #include "PhysicsList.hh"
-#include "G4EmDNAPhysics.hh"
+//Geant4
 #include "G4EmDNAPhysics_option2.hh"
 #include "G4SystemOfUnits.hh"
-#include "G4VPhysicsConstructor.hh"
-#include "G4RunManager.hh"
-
 
 PhysicsList::PhysicsList() : G4VModularPhysicsList()
 {
@@ -16,7 +14,4 @@ PhysicsList::PhysicsList() : G4VModularPhysicsList()
   	G4ProductionCutsTable::GetProductionCutsTable()->SetEnergyRange(10*eV, 1*GeV);
 }
 
-
-PhysicsList::~PhysicsList()
-{
-}
+PhysicsList::~PhysicsList() { }
