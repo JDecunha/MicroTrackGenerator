@@ -26,7 +26,7 @@ Each of the above input parameters in the run script are mandatory and the softw
 
 **-out:** (mandatory)
 
-Specify the output folder and name for the track information file. In addition to the name given the random seed and which thread the track was generated on will be appended to the filename.
+Specify the output folder and name for the track information file. In addition to the name given the random seed and which thread the track was generated on will be appended to the filename. If the output filepath names a folder, the user must generate that folder, this application will not create an output folder for you.
 
 **-mac:** (mandatory)
 
@@ -48,7 +48,7 @@ Specify the side length of the cubic voxel within which the generated tracks are
 
 **/primary/type [name]** (mandatory)
 
-Specify the name of the primary particle you would like to generate. Must be a name of a particle available in the G4ParticleTable.
+Specify the name of the primary particle you would like to generate. The value given must be a name of a particle listed in the G4ParticleTable.
 
 **/primary/energy [value] [unit]** (mandatory)
 
@@ -78,11 +78,11 @@ A macro file for MicroTrackGenerator to record 1 MeV proton tracks in a 3 mm cub
 
 ## Description
 
-MicroTrackGenerator has been developed to be as lightweight and simple as possible. Wherever possible end-user control has been removed to prevent the user from running the software in an inappropriate way. The purpose of the software is to generate a track library for a given source of ionizing radiation at a series of  energies. Individual components of the software are described below.
+MicroTrackGenerator has been developed to be as lightweight and simple as possible. Wherever possible, end-user control has been removed to prevent the user from running the software in an inappropriate way. The purpose of the software is to generate a track library for a given source of ionizing radiation at a series of  energies. Individual components of the software are described below.
 
 ### Geometry
 
-All tracks originate from the center of the side of a cubic voxel whose size is specified by voxelSideLength, as shown in Figure 1. When any particle in the track reaches the edge of the voxel it is terminated. 
+All tracks originate from the center of the side of a cubic voxel whose size is specified by voxelSideLength, as shown in Figure 1. The initial momentum of all primary particles is directed into the voxel. When any particle in the track reaches the edge of the voxel it is terminated. 
 
 <p align="center">
 <img src="/docs/Track_Voxel_Box.jpg" width="500">
@@ -91,7 +91,7 @@ All tracks originate from the center of the side of a cubic voxel whose size is 
 </p>
 
 
-The initial momentum of all primary particles is fixed to be directed into the voxel. The rationale behind this is to prevent needless track information from being stored. For example, when performing voxel specific microdosimetry (i.e. determing microdosimetric parameters in each voxel of a patient) and a given particle is determined to be in the energy spectra for that voxel, only the portion of that particle's track which lies within that voxel will contribute to the microdosimetric spectra for that voxel. This being the case, if I am interested in the microdosimetric spectra for say a monoenergetic 100 MeV proton beam, I only need to save the portion of that 100 MeV track which lies within the 3x3x3 mm voxel and not the entire track. This saves storage space compared to recording the entire track length.
+The rationale behind the use of a voxel geomtry is to prevent needless track information from being stored. When a particle exists in the energy spectrum of a voxel, only the portion of that particle's track which lies within that voxel will contribute to the microdosimetric spectra for that voxel. This being the case, if I am interested in the microdosimetric spectra of, for example, a monoenergetic 100 MeV proton beam, I only need to save the portion of that 100 MeV track which lies within the voxel and not the entire track. This saves storage space compared to recording the entire track length.
 
 ### Physics
 
@@ -101,11 +101,11 @@ The physics model Geant4DNA_Option2 is used for this application. Users are dire
 
 The seeding strategy is informed by a particular conversation on the Geant4 forums (https://geant4-forum.web.cern.ch/t/different-random-seeds-but-same-results/324/6). Sergio Losilla indicates that for a multithreaded application, a single seed can be used to uniquely seed the random number generators for each thread. I have performed some rudimentary verifications that this is the case and have observed that from a single seed on each thread unique tracks are generated.
 
-Assuming an appropriately recent version of the Geant4 toolkit is compiled against the MIMXMAX random number generator will be used by default. The MIXMAX generator is favored because a series of sequential random seeds can still yield uncorrelated random number generators.
+Assuming an appropriately recent version of the Geant4 toolkit is compiled against, the MIMXMAX random number generator will be used by default. The MIXMAX generator is favored because a series of sequential random seeds can still yield uncorrelated random number generators.
 
 ### Output File Structure
 
-The output file struture is depicted in Figure 2. Each thread the software is run on generates a unique .root file. The file contains a series of headers describing properties of the primary particle and the simulation geometry. 
+The output file struture is depicted in Figure 2. Each thread the software is run on generates a unique .root file. The file contains a series of headers describing properties of the primary particle and the simulation geometry along with TTrees encoding track information.
 
 <p align="center">
 <img src="/docs/TrackFileFig.jpg" width="550">
@@ -113,11 +113,11 @@ The output file struture is depicted in Figure 2. Each thread the software is ru
 <em><b>Figure 2:</b> Structure of a single .root output file generated by each thread.</em>
 </p>
 	
-The "Tracks" TTree encondes x,y,z position in nanometers as well as energy deposited at that location in electron-Volts. The "Track index" TTree encodes a series of numbers which correspond with the entry number in the "Tracks" tree at which the last step of a given track was taken. The "Track index" TTree exists to speed up analysis times of the tracks as they don't have to be scanned through to determine where each track ends.
+The "Tracks" TTree encondes x, y, z position in nanometers as well as energy deposited at each location in electron-Volts. The "Track index" TTree encodes a series of numbers which correspond with the entry number in the "Tracks" tree at which the last step of a given track occurs. The "Track index" TTree exists to speed up analysis times of the tracks as they won't have to be scanned through to determine where each track ends.
 
 ## Determining Microdosimetric Quantities from Track Library
 
-At this time I am developing software to take the tracks generated from MicroTrackGenerator and superimpose them on top of geometries in order to calculate microdosimetric quantities. This software will be shared in its own respository once I believe it is at a sufficient stage of development. This readme will be updated to direct you to that software once it has been released. 
+At this time I am developing software to take the tracks generated from MicroTrackGenerator and superimpose them in volumes in order to efficiently calculate microdosimetric quantities. This software will be shared in its own respository once I believe it is at a sufficient stage of development. This readme will be updated to direct you to that software once it has been released. 
 
 ## Software License
 
