@@ -68,7 +68,9 @@ The physics model Geant4DNA_Option2 is used for this application. Users are dire
 
 ### Random Seeding
 
-The seeding strategy is informed by a particular conversation on the Geant4 forums (https://geant4-forum.web.cern.ch/t/different-random-seeds-but-same-results/324/6). Sergio Losilla indicates that a single seed can be used to uniquely seed the random number generator for each of the thread processes. We have performed some rudimentary verifications that this is the case (from a single seed, we have found the tracks on each thread are unique). Assuming an appropriately recent version of the Geant4 toolkit is compiled against, then the MIMXMAX random number generator will be used by default. The MIXMAX generator is favored because a series of sequential random seeds can still yield independent random number generators.
+The seeding strategy is informed by a particular conversation on the Geant4 forums (https://geant4-forum.web.cern.ch/t/different-random-seeds-but-same-results/324/6). Sergio Losilla indicates that for a multithreaded application, a single seed can be used to uniquely seed the random number generators for each thread. We have performed some rudimentary verifications that this is the case and have observed that from a single seed on each thread unique tracks are generated.
+
+Assuming an appropriately recent version of the Geant4 toolkit is compiled against the MIMXMAX random number generator will be used by default. The MIXMAX generator is favored because a series of sequential random seeds can still yield uncorrelated random number generators.
 
 ### Output File Structure
 
@@ -76,4 +78,8 @@ The seeding strategy is informed by a particular conversation on the Geant4 foru
 
 ## Software License
 
-[To be decided.]
+Those wishing to use, modify, or reproduce this software must contact Joseph DeCunha at joseph.decunha@mdanderson.org to discuss an appropriate collaboration agreement. Copyright is claimed by Joseph M. DeCunha, 2021. All rights not expressly granted under this license are reserved.
+
+This software is provided by the copyright holder "As is" and any express or implied warranties, including, but not limited to, implied warranties of merchantability, of satisfactory quality, and fitness for a particular purpose or use are disclaimed. The copyright holder makes no representation that the software and modifications thereof, will not infringe any patent, copyright, trade secret or other proprietary right.
+
+The copyright holder shall have no liability for direct, indirect, special, incidental, consequential, exemplary, or punitive damages of any character including, without limitation, procurement of substitute goods or services, loss of use, data or profits, or business interruption, however caused and on any theory of contract, warranty, tort (including negligence), product liability or otherwise, arising in any way out of the use of this software, even if advised of the possibility of such damages.
