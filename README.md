@@ -84,7 +84,9 @@ MicroTrackGenerator has been developed to be as lightweight and simple as possib
 
 All tracks originate from the center of the side of a cubic voxel whose size is specified by voxelSideLength. When any particle in the track reaches the edge of the voxel it is terminated. 
 
-<img align="center" src="/docs/Track_Voxel_Box.jpg" width="500" />
+<p align="center">
+<img src="/docs/Track_Voxel_Box.jpg" width="500">
+</p>
 
 
 The initial momentum of all primary particles is fixed to be directed into the voxel. The rationale behind this is to prevent needless track information from being stored. For example, when performing voxel specific microdosimetry (i.e. determing microdosimetric parameters in each voxel of a patient) and a given particle is determined to be in the energy spectra for that voxel, only the portion of that particle's track which lies within that voxel will contribute to the microdosimetric spectra for that voxel. This being the case, if I am interested in the microdosimetric spectra for say a monoenergetic 100 MeV proton beam, I only need to save the portion of that 100 MeV track which lies within the 3x3x3 mm voxel and not the entire track. This saves storage space compared to recording the entire track length.
@@ -103,8 +105,10 @@ Assuming an appropriately recent version of the Geant4 toolkit is compiled again
 
 Output file struture is described in the diagram below (to be included). Each thread the software is run on generates a unique .root file. The file contains a series of headers describing properties of the primary particle and the simulation geometry. 
 
-<img src="/docs/TrackFileFig.jpg"/>
-
+<p align="center">
+<img src="/docs/TrackFileFig.jpg" width="550">
+</p>
+	
 The "Tracks" TTree encondes x,y,z position in nanometers as well as energy deposited at that location in electron-Volts. The "Track index" TTree encodes a series of numbers which correspond with the entry number in the "Tracks" tree at which the last step of a given track was taken. The "Track index" TTree exists to speed up analysis times of the tracks as they don't have to be scanned through to determine where each track ends.
 
 ## Determining Microdosimetric Quantities from Track Library
