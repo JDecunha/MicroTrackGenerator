@@ -38,3 +38,4 @@ build/
 .vscode/
 GNUmakefile
 output/*
+job_files/*

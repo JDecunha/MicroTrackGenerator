@@ -1,5 +1,15 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 import os
 import numpy as np
+import random
+import sys
+
+"""
+Created on Fri Aug 13 13:41:33 2021
+
+@author: joseph
+"""
 
 macro_template = """#Set verbosity
 	/tracking/verbose 0
@@ -18,28 +28,43 @@ macro_template = """#Set verbosity
 
 /run/beamOn {nbeamon} """
 
-niagara_macro_template = """#!/bin/bash
-#SBATCH --nodes=1
-#SBATCH --cpus-per-task=40
-#SBATCH --time={time}
-#SBATCH --job-name {slurmname}
-#SBATCH -o ./slurm_output/%x_%j.out
+lsf_template = """#!/bin/bash
+#BSUB -W {walltime_request}
+#BSUB -o {path_to_run_logfiles}
+#BSUB -cwd {path_to_application_directory}
+#BSUB -q {queue}
+#BSUB -n {cores_per_node}
+#BSUB -u jdecunha@mdanderson.org
+#BSUB -J {job_name}
 
-cd /scratch/s/senger/jdecunha/eventdose
+source /rsrch3/home/imag_phy/jdecunha/configure.sh
 
-source /home/s/senger/jdecunha/configure.sh
+{run_command}
+"""
 
-for i in {{1..40}};
-do ./build/sim {macroname} $( shuf -i 1-2000000000 -n 1 ) $( shuf -i 1-2000000000 -n 1 ) & sleep 1.1
-done
-wait"""
+seadragon_lsf_template = """#!/bin/bash
+#BSUB -W {walltime_request}
+#BSUB -o /rsrch3/home/imag_phy/jdecunha/MicroTrackGenerator/run_logfiles
+#BSUB -cwd /rsrch3/home/imag_phy/jdecunha/MicroTrackGenerator
+#BSUB -q short
+#BSUB -n 28
+#BSUB -u jdecunha@mdanderson.org
+#BSUB -J {job_name}
+
+source /rsrch3/home/imag_phy/jdecunha/configure.sh
+
+{run_command}
+"""
+
+run_command_template = """./build/MicroTrackGenerator -out {output_location} -mac {macro} -seed {seed} -mt NMAX \n"""
 
 def generate_macrofile(sidelength,particle,energy,nparticles):
     
     name = "%s_%sMeV" % (particle,energy)
+    macro_filename = ""
     
     try:
-        os.mkdir("output/")
+        os.mkdir("../output/")
     except OSError as err: 
         if err[0] == 17: #error no. 17 is file exists
             pass
@@ -47,7 +72,7 @@ def generate_macrofile(sidelength,particle,energy,nparticles):
             raise
     
     try:
-        os.mkdir("output/%s" % particle)
+        os.mkdir("../output/%s" % particle)
     except OSError as err: 
         if err[0] == 17: #error no. 17 is file exists
             pass
@@ -55,7 +80,7 @@ def generate_macrofile(sidelength,particle,energy,nparticles):
             raise
 
     try:
-        os.mkdir("output/%s/%sMeV" % (particle,energy))
+        os.mkdir("../output/%s/%sMeV" % (particle,energy))
     except OSError as err: 
         if err[0] == 17: #error no. 17 is file exists
             pass
@@ -66,14 +91,16 @@ def generate_macrofile(sidelength,particle,energy,nparticles):
     # Render the template
     macro_template_filled = macro_template.format(sidelength=sidelength,particle=particle,energy=energy,nbeamon=nparticles)
 
-    with file("macros/%s.mac" % name, "w") as f:
+    with file("../macros/%s.mac" % name, "w") as f:
         f.write(macro_template_filled)
+        macro_filename = "../macros/%s.mac" % name
 
-    return 1 
+    return macro_filename
 
 def generate_macrofile_series(sidelength,particle,energy_lowlim,energy_highlim,energy_spacing,nparticles):
     
     energy_linspace = np.linspace(energy_lowlim,energy_highlim,float(energy_highlim-energy_lowlim)/float(energy_spacing)+1)
+    macro_filenames = []
     
     for i in energy_linspace:
         energy = str(i)
@@ -81,7 +108,7 @@ def generate_macrofile_series(sidelength,particle,energy_lowlim,energy_highlim,e
         
         
         try:
-            os.mkdir("output/")
+            os.mkdir("../output/")
         except OSError as err: 
             if err[0] == 17: #error no. 17 is file exists
                 pass
@@ -90,7 +117,7 @@ def generate_macrofile_series(sidelength,particle,energy_lowlim,energy_highlim,e
         
         
         try:
-            os.mkdir("output/%s" % particle)
+            os.mkdir("../output/%s" % particle)
         except OSError as err: 
             if err[0] == 17: #error no. 17 is file exists
                 pass
@@ -98,7 +125,7 @@ def generate_macrofile_series(sidelength,particle,energy_lowlim,energy_highlim,e
                 raise
     
         try:
-            os.mkdir("output/%s/%sMeV" % (particle,energy))
+            os.mkdir("../output/%s/%sMeV" % (particle,energy))
         except OSError as err: 
             if err[0] == 17: #error no. 17 is file exists
                 pass
@@ -108,17 +135,18 @@ def generate_macrofile_series(sidelength,particle,energy_lowlim,energy_highlim,e
         # Render the template
         macro_template_filled = macro_template.format(sidelength=sidelength,particle=particle,energy=energy,nbeamon=nparticles)
     
-        with file("macros/%s.mac" % name, "w") as f:
+        with file("../macros/%s.mac" % name, "w") as f:
             f.write(macro_template_filled)
+            macro_filenames.append(f)
 
-    return 1 
+    return macro_filenames
 
 def determine_build_type():
     
    build_type = ""
    while build_type == "": #keep asking for input until a valid one is received
        
-       cmd_input = raw_input("Do you want to build a single macro file, or a series?: ")
+       cmd_input = raw_input("Do you want to configure a single run, or a series?: ")
         
        if cmd_input == "single":
            build_type = cmd_input
@@ -178,9 +206,46 @@ def determine_single_properties():
            print "Must input a valid integer."
            
            
-   generate_macrofile(sidelength,particle,energy,nbeamon)
+   walltime = ""
+
+   while walltime == "": #keep asking for input until a valid one is received
+       
+       cmd_input = raw_input("Input walltime request: ")
+       
+       try:
+           cmd_input = str(cmd_input)
+           walltime = cmd_input
+       except:
+           print "Could not parse walltime request as a string. Try again."
+           
+   jobname = ""
+   while jobname == "": #keep asking for input until a valid one is received
+       
+       cmd_input = raw_input("Input jobname for scheduler: ")
+       
+       try:
+           cmd_input = str(cmd_input)
+           jobname = cmd_input
+       except:
+           print "Could not parse jobname as a string. Try again."
+           
+   jobfiledir = "../"
+   
+   while jobfiledir == "../": #keep asking for input until a valid one is received
+       
+       cmd_input = raw_input("Input directory for jobfile relative to the MicroTrackGenerator main directory: ")
+       
+       try:
+           cmd_input = str(cmd_input)
+           jobfiledir += cmd_input
+       except:
+           print "Could not parse directory as a string. Try again."  
+           
+   macroNameAndPath = generate_macrofile(sidelength,particle,energy,nbeamon)
+   generate_runfile(particle,energy,macroNameAndPath,walltime,jobname,jobfiledir)
    
    return 1
+
 
 def determine_series_properties():
     
@@ -259,16 +324,33 @@ def determine_series_properties():
            print "Must input a valid integer."
            
            
-   generate_macrofile_series(sidelength,particle,energy_lowlim,energy_highlim,energy_spacing,nbeamon)
-   
-   return 1
+   return generate_macrofile_series(sidelength,particle,energy_lowlim,energy_highlim,energy_spacing,nbeamon)
+
+def generate_runfile(particle,energy,macro,walltime,jobname,jobdir):
+        
+    try:
+        os.mkdir(jobdir)
+    except OSError as err: 
+        if err[0] == 17: #error no. 17 is file exists
+            pass
+        else: #any other type of error then raise it
+            raise
+
+    # Render the template
+    runfile_template_filled = run_command_template.format(output_location = ("../output/" + particle +"_" + str(energy) + "MeV/"),macro=macro,seed=str(random.randint(1,sys.maxint)))
+    seadragon_template_filled = seadragon_lsf_template.format(walltime_request=walltime,job_name=jobname,jobdir=jobdir,run_command = runfile_template_filled)
+
+    with file("%s/%s.lsf" % (jobdir,jobname) , "w") as f:
+        f.write(seadragon_template_filled)
+
+    return 1
 
 if __name__ == "__main__":
-
+    
     build_type = determine_build_type()
     
     if build_type == "single":
-        determine_single_properties()
+        macroName = determine_single_properties()
         
     if build_type == "series":
         determine_series_properties()
