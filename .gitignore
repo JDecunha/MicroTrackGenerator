@@ -30,6 +30,7 @@
 *.exe
 *.out
 *.app
+*.pyc
 
 macros/old
 src/old

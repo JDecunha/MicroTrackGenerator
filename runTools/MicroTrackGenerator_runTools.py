@@ -1,34 +1,30 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
-import os
-from src import configure_single, configure_series
+
+from src import configure_single, configure_series, utils
 
 """
 Created on Fri Aug 13 13:41:33 2021
 
 @author: joseph
 """
+def print_intro_message():
+    
+    print "-------------------------------------"
+    print "MicroTrackGenerator_runTools v 0.9. \n(c) Joseph DeCunha 2021"
+    print "-------------------------------------"
+    print "NOTICE: MicroTrackGenerator_runTools is dependant on relative paths.\nDo not move the application from its original folder.\n"
+    
+    return 1
 
 def generate_base_directories():
-    """ The user may not have output of macros folders the first time they run this tool."""
+    """ The user may not have the output or macros folders the first time they run this tool."""
     
-    try:
-        os.mkdir("../output/")
-        print "Output folder does not currently exist in application directory. \nGenerating output folder.\n"
-    except OSError as err: 
-        if err[0] == 17: #error no. 17 is file exists
-            pass
-        else: #any other type of error then raise it
-            raise
+    message = "Output folder does not currently exist in application directory. \nGenerating output folder.\n"
+    utils.make_directory_and_print_message("../output/",message)
  
-    try:
-        os.mkdir("../macros/")
-        print "Macros folder does not currently exist in application directory. \nGenerating macros folder.\n"
-    except OSError as err: 
-        if err[0] == 17: #error no. 17 is file exists
-            pass
-        else: #any other type of error then raise it
-            raise
+    message = "Macros folder does not currently exist in application directory. \nGenerating macros folder.\n"
+    utils.make_directory_and_print_message("../macros/",message)
 
 def determine_build_type():
     
@@ -48,7 +44,9 @@ def determine_build_type():
 
 if __name__ == "__main__":
     
+    print_intro_message()
     generate_base_directories()
+    
     build_type = determine_build_type()
     
     if build_type == "single":
