@@ -1,0 +1,11 @@
+﻿#SBATCH -W {walltime_request}
+#SBATCH -o /home/jdecunha/MicroTrackGenerator/run_logfiles
+#SBATCH -cwd /home/jdecunha/MicroTrackGenerator
+#SBATCH -q s
+#SBATCH -n 40
+#SBATCH -u jdecunha@mdanderson.org
+#SBATCH -J {job_name}
+
+source /home/jdecunha/configure.sh
+
+{run_command}

@@ -17,7 +17,7 @@ Created on Fri Aug 13 13:41:33 2021
 @author: joseph
 """
 
-def determine_series_properties():
+def determine_series_properties(templateString):
     
    print "\n ** MACRO PROPERTIES: ** \n"
     
@@ -62,8 +62,10 @@ def determine_series_properties():
    jobfiledir = "../" + str(fileDirCommand.GetInput())
            
    macro_filenames = generate_macrofile_series(sidelength,particle,energy_lowlim,energy_highlim,energy_spacing,nbeamon)
-   generate_runfile_series(particle,energy_lowlim,energy_highlim,energy_spacing,macro_filenames,walltime,jobname,jobfiledir)
-           
+   generate_runfile_series(particle,energy_lowlim,energy_highlim,energy_spacing,macro_filenames,walltime,jobname,jobfiledir,templateString)
+   
+   print "build complete."        
+   
    return  1
 
 def generate_macrofile_series(sidelength,particle,energy_lowlim,energy_highlim,energy_spacing,nparticles):
@@ -88,7 +90,7 @@ def generate_macrofile_series(sidelength,particle,energy_lowlim,energy_highlim,e
 
     return macro_filenames
 
-def generate_runfile_series(particle,energy_lowlim,energy_highlim,energy_spacing,macronames,walltime,jobname,jobdir):
+def generate_runfile_series(particle,energy_lowlim,energy_highlim,energy_spacing,macronames,walltime,jobname,jobdir,templateString):
         
     try:
         os.mkdir(jobdir)
@@ -100,8 +102,8 @@ def generate_runfile_series(particle,energy_lowlim,energy_highlim,energy_spacing
             
     energy_linspace = np.linspace(energy_lowlim,energy_highlim,float(energy_highlim-energy_lowlim)/float(energy_spacing)+1)
     
-    with file("%s/%s.lsf" % (jobdir,jobname) , "w") as f:
-        seadragon_template_filled = templates.seadragon_lsf_template.format(walltime_request=walltime,job_name=jobname,jobdir=jobdir,run_command = "")
+    with file("%s/%s%s" % (jobdir,jobname,templateString[1]) , "w") as f:
+        seadragon_template_filled = templateString[0].format(walltime_request=walltime,job_name=jobname,jobdir=jobdir,run_command = "")
         f.write(seadragon_template_filled)
     
         for i in range(0,len(energy_linspace)):

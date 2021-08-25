@@ -1,0 +1,11 @@
+﻿#BSUB -W {walltime_request}
+#BSUB -o /rsrch3/home/imag_phy/jdecunha/MicroTrackGenerator/run_logfiles
+#BSUB -cwd /rsrch3/home/imag_phy/jdecunha/MicroTrackGenerator
+#BSUB -q medium
+#BSUB -n 28
+#BSUB -u jdecunha@mdanderson.org
+#BSUB -J {job_name}
+
+source /rsrch3/home/imag_phy/jdecunha/configure.sh
+
+{run_command}

@@ -16,7 +16,7 @@ Created on Fri Aug 13 13:41:33 2021
 @author: joseph
 """
 
-def determine_single_properties():
+def determine_single_properties(templateString):
       
    print "\n ** MACRO PROPERTIES: ** \n"
     
@@ -52,7 +52,9 @@ def determine_single_properties():
    jobfiledir = "../" + str(fileDirCommand.GetInput())
            
    macroNameAndPath = generate_macrofile(sidelength,particle,energy,nbeamon)
-   generate_runfile(particle,energy,macroNameAndPath,walltime,jobname,jobfiledir)
+   generate_runfile(particle,energy,macroNameAndPath,walltime,jobname,jobfiledir,templateString)
+   
+   print "build complete."
    
    return 1
 
@@ -74,15 +76,15 @@ def generate_macrofile(sidelength,particle,energy,nparticles):
 
     return macro_filename
 
-def generate_runfile(particle,energy,macro,walltime,jobname,jobdir):
+def generate_runfile(particle,energy,macro,walltime,jobname,jobdir,templateString):
         
     utils.make_directory(jobdir)
 
     # Render the template
     runfile_template_filled = templates.run_command_template.format(output_location = ("../output/" + particle +"_" + str(energy) + "MeV/"),macro=macro,seed=str(random.randint(1,sys.maxint)))
-    seadragon_template_filled = templates.seadragon_lsf_template.format(walltime_request=walltime,job_name=jobname,jobdir=jobdir,run_command = runfile_template_filled)
+    seadragon_template_filled = templateString[0].format(walltime_request=walltime,job_name=jobname,jobdir=jobdir,run_command = runfile_template_filled)
 
-    with file("%s/%s.lsf" % (jobdir,jobname) , "w") as f:
+    with file("%s/%s%s" % (jobdir,jobname,templateString[1]) , "w") as f:
         f.write(seadragon_template_filled)
 
     return 1

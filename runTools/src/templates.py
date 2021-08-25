@@ -18,30 +18,4 @@ macro_template = """#Set verbosity
 
 /run/beamOn {nbeamon} """
 
-lsf_template = """#BSUB -W {walltime_request}
-#BSUB -o {path_to_run_logfiles}
-#BSUB -cwd {path_to_application_directory}
-#BSUB -q {queue}
-#BSUB -n {cores_per_node}
-#BSUB -u jdecunha@mdanderson.org
-#BSUB -J {job_name}
-
-source /rsrch3/home/imag_phy/jdecunha/configure.sh
-
-{run_command}
-"""
-
-seadragon_lsf_template = """#BSUB -W {walltime_request}
-#BSUB -o /rsrch3/home/imag_phy/jdecunha/MicroTrackGenerator/run_logfiles
-#BSUB -cwd /rsrch3/home/imag_phy/jdecunha/MicroTrackGenerator
-#BSUB -q short
-#BSUB -n 28
-#BSUB -u jdecunha@mdanderson.org
-#BSUB -J {job_name}
-
-source /rsrch3/home/imag_phy/jdecunha/configure.sh
-
-{run_command}
-"""
-
 run_command_template = """./build/MicroTrackGenerator -out {output_location} -mac {macro} -seed {seed} -mt NMAX \n"""
