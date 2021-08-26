@@ -82,9 +82,25 @@ Using the methods described in the previous section, a user can run the applicat
 ```
 python2 MicroTrackGenerator_runTools.py
 ```
+The commands available from the main shell of the runTools are _build_, _configure_, _help_, and _quit_. The use of the _configure_ and _build_ commands will be explained in the next sections.
 ### Configuring the runTools
+When first using the runTools the _configure_ command should be invoked. When _configure_ is called, the terminal will prompt you to provide a path to a file containing a template of the run file for your cluster. You will have to make a template appropriate for the computing cluster you intend to run the software on. Bundled with the software, in the runTools/templates folder is an example template which is for use on the MD Anderson Cancer Center Seadragon computing cluster. The template is as follows:
+```
+#BSUB -W {walltime_request}
+#BSUB -o /rsrch3/home/imag_phy/jdecunha/MicroTrackGenerator/run_logfiles
+#BSUB -cwd /rsrch3/home/imag_phy/jdecunha/MicroTrackGenerator
+#BSUB -q short
+#BSUB -n 28
+#BSUB -u jdecunha@mdanderson.org
+#BSUB -J {job_name}
 
+source /rsrch3/home/imag_phy/jdecunha/configure.sh
+
+{run_command}
+```
+In addition to all of the necessary commands for your scheduler, the template should include: `{walltime_request}` `{job_name}` and `{run_command}` in the appropriate locations. The configure command will also ask you for the file extension you desire for any generated runfiles. Make sure to include the "." preceeding your file extension.
 ### Building with the runTools
+Once your template has been called and _configure_ has been invoked, you are ready to call _build_. The build procedure will prompt you to give the required inputs one at a time, in order to generate the macro and run files. _build_ allows you to generate a single macro and run file pair, or a series of macro files for a single particle at various energies. This is useful if you desire to generate a library of tracks for a particle type at many energies.
 
 ## Description
 
