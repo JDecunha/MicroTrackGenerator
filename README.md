@@ -100,7 +100,7 @@ source /rsrch3/home/imag_phy/jdecunha/configure.sh
 ```
 In addition to all of the necessary commands for your scheduler, the template should include: `{walltime_request}` `{job_name}` and `{run_command}` in the appropriate locations. The configure command will also ask you for the file extension you desire for any generated runfiles. Make sure to include the "." preceeding your file extension.
 ### Building with the runTools
-Once your template has been called and _configure_ has been invoked, you are ready to call _build_. The build procedure will prompt you to give the required inputs one at a time, in order to generate the macro and run files. _build_ allows you to generate a single macro and run file pair, or a series of macro files for a single particle at various energies. This is useful if you desire to generate a library of tracks for a particle type at many energies.
+Once your template has been created and _configure_ has been invoked, you are ready to call _build_. The build procedure will prompt you to give the required inputs one at a time, in order to generate the macro and run files. _build_ allows you to generate a single macro and run file pair, or a series of macro files for a single particle at various energies. This is useful if you desire to generate a library of tracks for a particle type at many energies.
 
 ## Description
 
