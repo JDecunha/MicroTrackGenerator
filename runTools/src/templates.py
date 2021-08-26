@@ -18,4 +18,4 @@ macro_template = """#Set verbosity
 
 /run/beamOn {nbeamon} """
 
-run_command_template = """./build/MicroTrackGenerator -out {output_location} -mac {macro} -seed {seed} -mt NMAX \n"""
+run_command_template = """../build/MicroTrackGenerator -out {output_location} -mac {macro} -seed {seed} -mt NMAX \n"""

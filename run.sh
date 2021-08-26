@@ -1,1 +1,1 @@
-./build/MicroTrackGenerator  -out output/proton_1mev -mac macros/proton_1mev.in -seed 48921 -mt NMAX
+./build/MicroTrackGenerator -out ./output/proton/50.0MeV/ -mac ./macros/proton_50.0MeV.mac -seed 848075447756724293 -mt 2
