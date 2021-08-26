@@ -1,4 +1,4 @@
-# MicroTrackGenerator (v0.9)
+# MicroTrackGenerator (v0.9.1)
 An application to calculate the trajectories and energy deposition events of tracks of ionizing radiation for uses in computational microdosimetry.
 ## Installation and Requirements
 The required software and libraries to compile MicroTrackGenerator include:
@@ -76,6 +76,16 @@ A macro file for MicroTrackGenerator to record 1 MeV proton tracks in a 3 mm cub
 /run/beamOn 2
 ```
 
+## Using the runTools
+
+Using the methods described in the previous section, a user can run the application by making their own macro file and invoking the application from the command line or a script. We highly recommend however, that users planning to run MicroTrackGenerator use the bundled runTools to automatically create their own macro files and run scripts. The runTools are a Python2 based command line interface application. A Python2 installation with numpy is all that should be required to make use of the runTools. The runTools are designed to rapidly generate 1.) macro files and 2.) run files for computing cluster schedulers. The runTools are invoked on the command line from the runTools folder by: 
+```
+python2 MicroTrackGenerator_runTools.py
+```
+### Configuring the runTools
+
+### Building with the runTools
+
 ## Description
 
 MicroTrackGenerator has been developed to be as lightweight and simple as possible. Wherever possible, end-user control has been removed to prevent the user from running the software in an inappropriate way. The purpose of the software is to generate a track library for a given source of ionizing radiation at a series of  energies. Individual components of the software are described below.
@@ -91,7 +101,7 @@ All tracks originate from the center of the side of a cubic voxel whose size is 
 </p>
 
 
-The rationale behind the use of a voxel geomtry is to prevent needless track information from being stored. When a particle exists in the energy spectrum of a voxel, only the portion of that particle's track which lies within that voxel will contribute to the microdosimetric spectra for that voxel. This being the case, if I am interested in the microdosimetric spectra of, for example, a monoenergetic 100 MeV proton beam, I only need to save the portion of that 100 MeV track which lies within the voxel and not the entire track. This saves storage space compared to recording the entire track length.
+The rationale behind the use of a voxel geometry is to prevent needless track information from being stored. When a particle exists in the energy spectrum of a voxel, only the portion of that particle's track which lies within that voxel will contribute to the microdosimetric spectra for that voxel. This being the case, if I am interested in the microdosimetric spectra of, for example, a monoenergetic 100 MeV proton beam, I only need to save the portion of that 100 MeV track which lies within the voxel and not the entire track. This saves storage space compared to recording the entire track length.
 
 ### Physics
 
