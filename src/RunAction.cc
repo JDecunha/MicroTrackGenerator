@@ -97,7 +97,7 @@ void RunAction::CreateTFile()
   fileName.append(parser->GetCommandIfActive("-out")->GetOption());
 
   //Append the seed
-  fileName.append("_seed_"+parser->GetCommandIfActive("-seed")->GetOption());
+  fileName.append(parser->GetCommandIfActive("-seed")->GetOption());
 
   //Append the threadID to the filename, if we are running multithreaded
   G4int threadID = G4Threading::G4GetThreadId();

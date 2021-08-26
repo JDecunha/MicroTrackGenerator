@@ -110,7 +110,7 @@ def generate_runfile_series(particle,energy_lowlim,energy_highlim,energy_spacing
             energy = str(energy_linspace[i])
     
             # Render the template
-            runfile_template_filled = templates.run_command_template.format(output_location = ("../output/" + particle + "/" + str(energy) + "MeV/" + particle),macro=macronames[i],seed=str(random.randint(1,sys.maxint)))
+            runfile_template_filled = templates.run_command_template.format(output_location = ("../output/" + particle + "/" + str(energy) + "MeV/"),macro=macronames[i],seed=str(random.randint(1,sys.maxint)))
             f.write(runfile_template_filled)
         
             
