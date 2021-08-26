@@ -81,7 +81,7 @@ def generate_runfile(particle,energy,macro,walltime,jobname,jobdir,templateStrin
     utils.make_directory(jobdir)
 
     # Render the template
-    runfile_template_filled = templates.run_command_template.format(output_location = ("../output/" + particle + "/" + str(energy) + "MeV/"),macro=macro,seed=str(random.randint(1,sys.maxint)))
+    runfile_template_filled = templates.run_command_template.format(output_location = ("../output/" + particle + "/" + particle + "_" + str(energy) + "MeV/"),macro=macro,seed=str(random.randint(1,sys.maxint)))
     seadragon_template_filled = templateString[0].format(walltime_request=walltime,job_name=jobname,jobdir=jobdir,run_command = runfile_template_filled)
 
     with file("%s/%s%s" % (jobdir,jobname,templateString[1]) , "w") as f:
