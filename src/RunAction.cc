@@ -8,6 +8,7 @@
 #include "CommandLineParser.hh"
 //ROOT
 #include"TROOT.h"
+#include "TObject.h"
 #include "TFile.h"
 #include "TTree.h"
 //Geant4
@@ -68,7 +69,7 @@ void RunAction::EndMaster(const G4Run*) { }
 
 void RunAction::EndWorker(const G4Run*)
 {
-  pTrackOutputFile->Write();
+  pTrackOutputFile->Write(0,TObject::kWriteDelete);
   pTrackOutputFile->Close();
 
   delete pTrackOutputFile;
