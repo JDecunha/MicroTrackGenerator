@@ -107,7 +107,7 @@ def generate_runfile_series(particle,energy_lowlim,energy_highlim,energy_spacing
         f.write(seadragon_template_filled)
     
         for i in range(0,len(energy_linspace)):
-            energy = str(energy_linspace[i])
+            energy = str(float(energy_linspace[i]))
     
             # Render the template
             runfile_template_filled = templates.run_command_template.format(output_location = ("../output/" + particle + "/" + str(energy) + "MeV/"),macro=macronames[i],seed=str(random.randint(1,sys.maxint)))
