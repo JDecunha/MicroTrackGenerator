@@ -74,7 +74,7 @@ def generate_macrofile_series(sidelength,particle,energy_lowlim,energy_highlim,e
     macro_filenames = []
     
     for i in energy_linspace:
-        energy = str(i)
+        energy = str(float(i))
         name = "%s_%sMeV" % (particle,energy)
         
         utils.make_directory("../output/")
