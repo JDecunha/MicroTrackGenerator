@@ -1,8 +1,10 @@
-﻿#BSUB -W {walltime_request}
+#!/bin/bash
+﻿
+#BSUB -W {walltime_request}
 #BSUB -o /rsrch3/home/radphys_rsch/jdecunha/MicroTrackGenerator/run_logfiles
 #BSUB -cwd /rsrch3/home/radphys_rsch/jdecunha/MicroTrackGenerator/runFiles
 #BSUB -q short
-#BSUB -m 165
+#BSUB -M 165
 #BSUB -R rusage[mem=165]
 #BSUB -n 28
 #BSUB -u jdecunha@mdanderson.org

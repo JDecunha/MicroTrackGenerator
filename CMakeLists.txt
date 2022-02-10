@@ -1,6 +1,6 @@
 #CMakeLists file for MicroTrackGenerator
 
-cmake_minimum_required(VERSION 3.3 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
 project(MicroTrackGenerator VERSION 1.0.0)
 
 ###
