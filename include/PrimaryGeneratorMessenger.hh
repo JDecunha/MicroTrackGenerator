@@ -17,10 +17,9 @@ class PrimaryGeneratorMessenger : public G4UImessenger
   		void SetNewValue(G4UIcommand* command, G4String value);
                          
 	private:
-		PrimaryGeneratorAction* pPrimaryGenerator;
+		PrimaryGeneratorAction* pPrimaryGenerator{};
 
-		G4UIdirectory* primary_directory;
-		G4UIcmdWithAString* primary_type;
-		G4UIcmdWithADoubleAndUnit* primary_energy;
-
+		G4UIdirectory* primary_directory{};
+		G4UIcmdWithAString* primary_type{};
+		G4UIcmdWithADoubleAndUnit* primary_energy{};
 };

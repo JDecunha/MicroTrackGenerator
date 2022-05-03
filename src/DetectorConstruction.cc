@@ -12,15 +12,18 @@
 
 DetectorConstruction::DetectorConstruction():G4VUserDetectorConstruction()
 {
-  sideLength = 0;
-  sideLengthInitialized = false;
-
   pMessenger = new DetectorConstructionMessenger(this);
 }  
 
 DetectorConstruction::~DetectorConstruction()
 {
   delete pMessenger;
+}
+
+void DetectorConstruction::SetSideLength(const G4double& sidelength)
+{
+  sideLength = sidelength;
+  sideLengthInitialized = true;
 }
 
 G4VPhysicalVolume* DetectorConstruction::Construct()
@@ -31,19 +34,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
       description << "Voxel side length was not defined. Set in macro before initialization with /geometry/voxelSideLength" << G4endl;
       G4Exception("DetectorConstruction::Construct()", "Voxel side length NDEF.", FatalException, description, "");
   }
-
   return ConstructDetector();
-}
-
-void DetectorConstruction::SetSideLength(G4double sidelength)
-{
-  sideLength = sidelength;
-  sideLengthInitialized = true;
-}
-
-G4double DetectorConstruction::GetSideLength()
-{
-  return sideLength;
 }
 
 G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
@@ -55,8 +46,8 @@ G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
   //Create the world volume
   //The world volume takes care of killing tracks in X and Y, because it is sidelength long in those axes.
   //But in the Z axis it is 2x sidelength long, so I have to kill the particles that backscatter in steppingaction.
-  //The reason for the complexity above is that the world volume can NOT be offcentered. 
-  //If we could offcenter the world volume we would not need to kill in steppingaction
+  //If we could offcenter the world cube we would not need the extra complexity
+  //of killing in steppingaction
   G4VSolid* solidWorld = new G4Box("World", sideLength/2,sideLength/2,sideLength);
 
   G4LogicalVolume* logicWorld = new G4LogicalVolume(solidWorld,  //its solid

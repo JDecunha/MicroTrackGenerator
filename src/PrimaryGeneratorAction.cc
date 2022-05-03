@@ -57,7 +57,7 @@ void PrimaryGeneratorAction::CheckInitialized() //This gets called from the RunA
 
 // Methods for setting data fields of the generator using the messenger
 
-void PrimaryGeneratorAction::SetPrimaryParticleType(G4String name)
+void PrimaryGeneratorAction::SetPrimaryParticleType(const G4String& name)
 {
     G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
     G4ParticleDefinition* particle = particleTable->FindParticle(name);
@@ -65,7 +65,7 @@ void PrimaryGeneratorAction::SetPrimaryParticleType(G4String name)
     particleTypeInitialized = true;
 }
 
-void PrimaryGeneratorAction::SetPrimaryEnergy(G4double energy)
+void PrimaryGeneratorAction::SetPrimaryEnergy(const G4double& energy)
 {
     gun->SetParticleEnergy(energy);
     energyInitialized = true;
@@ -73,22 +73,22 @@ void PrimaryGeneratorAction::SetPrimaryEnergy(G4double energy)
 
 // Methods for accessing data fields of the generator
 
-G4String PrimaryGeneratorAction::GetPrimaryName()
+G4String PrimaryGeneratorAction::GetPrimaryName() const
 {
 	return gun->GetParticleDefinition()->GetParticleName();
 }
 
-G4double PrimaryGeneratorAction::GetPrimaryEnergy()
+G4double PrimaryGeneratorAction::GetPrimaryEnergy() const
 {
 	return gun->GetParticleEnergy()/MeV;
 }
 
-G4ThreeVector PrimaryGeneratorAction::GetParticleOrigin()
+G4ThreeVector PrimaryGeneratorAction::GetParticleOrigin() const
 {
     return gun->GetParticlePosition();
 }
 
-G4ThreeVector PrimaryGeneratorAction::GetParticleInitialDirection()
+G4ThreeVector PrimaryGeneratorAction::GetParticleInitialDirection() const
 {
     return gun->GetParticleMomentumDirection();
 }

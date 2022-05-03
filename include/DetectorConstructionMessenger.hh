@@ -15,8 +15,7 @@ class DetectorConstructionMessenger : public G4UImessenger
   		void SetNewValue(G4UIcommand* command, G4String value);
                          
 	private:
-		DetectorConstruction* pDetectorConstruction;
-		G4UIdirectory* geometry_directory;
-		G4UIcmdWithADoubleAndUnit* geometry_voxel_sidelength;
-
+		DetectorConstruction* pDetectorConstruction{};
+		G4UIdirectory* geometry_directory{};
+		G4UIcmdWithADoubleAndUnit* geometry_voxel_sidelength{};
 };

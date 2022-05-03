@@ -8,10 +8,7 @@
 #include "G4RunManager.hh"
 
 EventAction::EventAction() : G4UserEventAction() 
-{ 
-  fInitialized = false; 
-  indexEntry = 0;
-}
+{ }
 
 EventAction::~EventAction() { }
 

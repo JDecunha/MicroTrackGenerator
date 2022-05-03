@@ -43,7 +43,11 @@ void PhysicsListMessenger::SetNewValue(G4UIcommand* command, G4String value)
             _PhysicsList->AddEMPhysicsListConstructor(new G4EmDNAPhysics_option2());
         }
         else
-            throw std::runtime_error("The EM physics list " + value + " is not a valid option (Choose DNA0 or DNA2).");
+        {
+            G4ExceptionDescription description;
+            description << "EM Physics list " << _physicsListString << " is not a valid option (Choose DNA0 or DNA2)" << G4endl;
+            G4Exception("PhysicsListMessenger::SetNewValue()", "EM Physics list invalid.", FatalException, description, "");
+        }
     }
 }
 

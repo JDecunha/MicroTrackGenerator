@@ -9,22 +9,22 @@ class TTree;
 class EventAction : public G4UserEventAction
 {
 	public:
-
 	  EventAction();
 	  ~EventAction();
 	  
 	  void EndOfEventAction(const G4Event*);
 
 	private:
-		
 		friend class RunAction;
 
 		void InitializeEventIndexTree();
 
-		TTree *pEventIndexTree; //provides a series of indices indicating which entry in the TTree is the end of an event
-		long long indexEntry;
-
+		long long indexEntry{};
+		//provides a series of indices for which entry in Tracks TTree is the end of an event
+		TTree *pEventIndexTree{}; 
 		//Flags
-		G4bool fInitialized;
+		G4bool fInitialized{};
 };
+
+		
 

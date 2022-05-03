@@ -4,6 +4,7 @@
 //Geant4
 #include "G4SystemOfUnits.hh"
 #include "G4VPhysicsConstructor.hh"
+#include "G4EmDNAPhysics.hh"
 #include "G4RunManager.hh"
 #include "G4BosonConstructor.hh"
 #include "G4LeptonConstructor.hh"
@@ -13,7 +14,7 @@
 #include "G4IonConstructor.hh"
 #include "G4ShortLivedConstructor.hh"
 #include "G4DNAGenericIonsManager.hh"
-#include "G4EmDNAPhysics.hh"
+
 
 PhysicsList::PhysicsList() : G4VModularPhysicsList()
 {
@@ -72,15 +73,32 @@ void PhysicsList::ConstructParticle()
 void PhysicsList::ConstructProcess()
 {
     AddTransportation();
-    _emPhysicsConstructor->ConstructProcess();
+    if (_PhysicsListEMInitialized)
+    {
+        _emPhysicsConstructor->ConstructProcess();
+    }
+    else
+    {
+        G4ExceptionDescription description;
+        description << "EM Physics list not initialized by user. Set in macro before initialization with /physics/list" << G4endl;
+        G4Exception("PhysicsList::ConstructProcess()", "EM Physics list NDEF.", FatalException, description, "");
+    }
 }
 
 
 //The messenger calls this function to set the physics list
 void PhysicsList::AddEMPhysicsListConstructor(G4VPhysicsConstructor* emPhysicsConstructor)
 {
+    //Pass on the old verbosity level to the new physics
+    G4int verbosity = _emPhysicsConstructor->GetVerboseLevel();
+    emPhysicsConstructor->SetVerboseLevel(verbosity);
+
+    //Delete the old physics
     delete _emPhysicsConstructor;
+
+    //Set pointer to the new physics and confirm initialized
     _emPhysicsConstructor = emPhysicsConstructor;
+    _PhysicsListEMInitialized = true;
 }
 
 
