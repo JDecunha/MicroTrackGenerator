@@ -23,10 +23,10 @@ void SteppingAction::InitializeTTree()
     pTrackOutputTree = new TTree("Tracks","Track information data");
 
     //Configure the branches
-    pTrackOutputTree->Branch("x",&x,"nm/D");
-    pTrackOutputTree->Branch("y",&y,"nm/D");
-    pTrackOutputTree->Branch("z",&z,"nm/D");
-    pTrackOutputTree->Branch("edep",&edep,"eV/D"); 
+    pTrackOutputTree->Branch("x [nm]",&x,"x/D");
+    pTrackOutputTree->Branch("y [nm]",&y,"y/D");
+    pTrackOutputTree->Branch("z [nm]",&z,"z/D");
+    pTrackOutputTree->Branch("edep [eV]",&edep,"edep/D"); 
     
     fTTreeInitialized = true;
 

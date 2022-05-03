@@ -2,6 +2,8 @@
 #include "DetectorConstruction.hh"
 #include "EventAction.hh"
 #include "PrimaryGeneratorAction.hh"
+#include "PhysicsList.hh"
+#include "PhysicsListMessenger.hh"
 #include "RunAction.hh"
 #include "SteppingAction.hh"
 //Extern
@@ -137,6 +139,20 @@ void RunAction::WriteTFileInformationFields()
   //Get the side length
   G4double sideLength = ((DetectorConstruction*)(G4RunManager::GetRunManager()->GetUserDetectorConstruction()))->GetSideLength();
 
+  G4String physicsListString{};
+  
+  //G4VModularPhysicsList virtually inherits from G4VUserPhysicsList. So I have to use a dynamic cast (casting at runtime instead of compile 
+  //time) to make this cast work. Virtual inheritance exists to eliminate ambiguities with diamond inheritance, but in my opinion 
+  //G4VModularPhysicsList could have done without it and it would have worked just fine.
+  const PhysicsList* pPhys = dynamic_cast<const PhysicsList*>(G4RunManager::GetRunManager()->GetUserPhysicsList());
+
+  if (pPhys) //check the dynamic cast worked
+  {
+    physicsListString= pPhys->GetMessenger()->GetPhysicsListString(); //Get the physics list string
+  }
+  else
+    throw std::runtime_error("Dynamic cast from UserPhysicsList to Physics List failed.");
+
   //Pull properties about primary particles
   TNamed tnPrimaryParticle = TNamed("Primary particle",pPrimaryGeneratorAction->GetPrimaryName());
   TNamed tnPrimaryEnergy = TNamed("Primary energy [MeV]",std::to_string(pPrimaryGeneratorAction->GetPrimaryEnergy()));
@@ -145,6 +161,7 @@ void RunAction::WriteTFileInformationFields()
   TNamed tnVoxelSideLength = TNamed("Voxel side length [mm]",std::to_string(sideLength));
   TNamed tnRandomSeed = TNamed("Random seed",parser->GetCommandIfActive("-seed")->GetOption());
   TNamed tnRhreadID = TNamed("Thread ID",std::to_string(threadID));
+  TNamed tnPhysicsList = TNamed("Physics List", physicsListString);
 
   //Write properties to the currently open TFile
   tnPrimaryParticle.Write();
@@ -154,6 +171,7 @@ void RunAction::WriteTFileInformationFields()
   tnVoxelSideLength.Write();
   tnRandomSeed.Write();
   tnRhreadID.Write();
+  tnPhysicsList.Write();
 }
 
 void RunAction::InitializeTTrees()
