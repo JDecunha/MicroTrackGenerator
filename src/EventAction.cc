@@ -23,7 +23,7 @@ void EventAction::InitializeEventIndexTree()
     pEventIndexTree = new TTree("Track index","Entry number for the end of each track");
 
     //Configure the branch
-    pEventIndexTree->Branch("index",&indexEntry,"unitless");
+    pEventIndexTree->Branch("index",&indexEntry,"trackstartpoint/G"); //G is Long64_t i.e. long long
 
     fInitialized = true;
   }

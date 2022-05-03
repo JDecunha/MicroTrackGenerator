@@ -23,17 +23,17 @@ void SteppingAction::InitializeTTree()
     pTrackOutputTree = new TTree("Tracks","Track information data");
 
     //Configure the branches
-    pTrackOutputTree->Branch("x",&x,"nm");
-    pTrackOutputTree->Branch("y",&y,"nm");
-    pTrackOutputTree->Branch("z",&z,"nm");
-    pTrackOutputTree->Branch("edep",&edep,"eV");
+    pTrackOutputTree->Branch("x",&x,"nm/D");
+    pTrackOutputTree->Branch("y",&y,"nm/D");
+    pTrackOutputTree->Branch("z",&z,"nm/D");
+    pTrackOutputTree->Branch("edep",&edep,"eV/D"); 
     
     fTTreeInitialized = true;
 
     //Additional notes:
 
     //We don't need the output file because it already has been created in RunAction
-    //ROOT will link the newly created TTree to the currently opened TFile
+    //ROOT manager will link the newly created TTree to the currently opened TFile
     //ROOT will do garbage collection on the TTree when we close the TFile later too.
     
     //Tree splitting cannot be set because TTree is composed of fundamental data types
@@ -43,12 +43,12 @@ void SteppingAction::InitializeTTree()
 
 void SteppingAction::UserSteppingAction(const G4Step* step) //Save the position and edep for every step
 { 
-  //Get the prestep and pull Z to check bounds
+  //Get the PreStepPoint and pull z coordinate to check if ptcl is within the cube
   preStep = step->GetPreStepPoint();
   z=preStep->GetPosition().z()/nanometer;
 
   //Kill the step if outside of bounds
-  if (z > 0) //thishecks if there is backscatter because the tracks are directed in the -Z axis
+  if (z > 0) //this checks if there is backscatter because the tracks are directed in the -Z axis
   {
     step->GetTrack()->SetTrackStatus(fStopAndKill);
     return;
