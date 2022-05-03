@@ -23,10 +23,10 @@ void SteppingAction::InitializeTTree()
     pTrackOutputTree = new TTree("Tracks","Track information data");
 
     //Configure the branches
-    pTrackOutputTree->Branch("x [nm]",&x,"x/D");
-    pTrackOutputTree->Branch("y [nm]",&y,"y/D");
-    pTrackOutputTree->Branch("z [nm]",&z,"z/D");
-    pTrackOutputTree->Branch("edep [eV]",&edep,"edep/D");
+    pTrackOutputTree->Branch("x",&x,"nm");
+    pTrackOutputTree->Branch("y",&y,"nm");
+    pTrackOutputTree->Branch("z",&z,"nm");
+    pTrackOutputTree->Branch("edep",&edep,"eV");
     
     fTTreeInitialized = true;
 
@@ -41,29 +41,37 @@ void SteppingAction::InitializeTTree()
   }
 }
 
-void SteppingAction::UserSteppingAction(const G4Step* step)
+void SteppingAction::UserSteppingAction(const G4Step* step) //Save the position and edep for every step
 { 
-  //Save the positio and edep for every step
+  //Get the prestep and pull Z to check bounds
   preStep = step->GetPreStepPoint();
+  z=preStep->GetPosition().z()/nanometer;
 
+  //Kill the step if outside of bounds
+  if (z > 0) //thishecks if there is backscatter because the tracks are directed in the -Z axis
+  {
+    step->GetTrack()->SetTrackStatus(fStopAndKill);
+    return;
+  }
+
+  //If in bounds and not a transportation step, score the edep
   if (step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()!="Transportation")
   {
+    x=preStep->GetPosition().x()/nanometer;
+    y=preStep->GetPosition().y()/nanometer;
     edep = step->GetTotalEnergyDeposit()/eV;
     if(edep != 0)
     {
-      x=preStep->GetPosition().x()/nanometer;
-      y=preStep->GetPosition().y()/nanometer;
-      z=preStep->GetPosition().z()/nanometer;
       pTrackOutputTree->Fill();
       edepsThisEvent += 1;
     }
   }
 }    
 
-G4long SteppingAction::ResetEdepsThisEvent()
+long long SteppingAction::ResetEdepsThisEvent()
 {
   //Grab the number of edeps this event, zero the internal counter, and return the value
-  G4int returnVal = edepsThisEvent;
+  long long returnVal = edepsThisEvent;
   edepsThisEvent = 0;
   return returnVal;
 }

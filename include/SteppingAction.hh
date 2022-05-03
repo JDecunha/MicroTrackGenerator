@@ -23,14 +23,14 @@ class SteppingAction : public G4UserSteppingAction
 		friend class EventAction;
 
 		void InitializeTTree();
-		G4long ResetEdepsThisEvent();
+		long long ResetEdepsThisEvent();
 
 		TTree *pTrackOutputTree;
 
 		//Variables needed to populate the TTrees
 		G4StepPoint* preStep;
 		G4double x,y,z,edep; 
-		G4long edepsThisEvent;
+		long long edepsThisEvent;
 
 		//Flags
 		G4bool fTTreeInitialized;	

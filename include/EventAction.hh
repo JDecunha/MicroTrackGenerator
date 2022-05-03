@@ -22,7 +22,7 @@ class EventAction : public G4UserEventAction
 		void InitializeEventIndexTree();
 
 		TTree *pEventIndexTree; //provides a series of indices indicating which entry in the TTree is the end of an event
-		long indexEntry;
+		long long indexEntry;
 
 		//Flags
 		G4bool fInitialized;

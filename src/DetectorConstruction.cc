@@ -52,8 +52,12 @@ G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
   G4NistManager * man = G4NistManager::Instance();
   G4Material * H2O = man->FindOrBuildMaterial("G4_WATER");
 
-  // Create a voxel within which to confine the tracks
-  G4VSolid* solidWorld = new G4Box("World", sideLength/2,sideLength/2,sideLength/2);
+  //Create the world volume
+  //The world volume takes care of killing tracks in X and Y, because it is sidelength long in those axes.
+  //But in the Z axis it is 2x sidelength long, so I have to kill the particles that backscatter in steppingaction.
+  //The reason for the complexity above is that the world volume can NOT be offcentered. 
+  //If we could offcenter the world volume we would not need to kill in steppingaction
+  G4VSolid* solidWorld = new G4Box("World", sideLength/2,sideLength/2,sideLength);
 
   G4LogicalVolume* logicWorld = new G4LogicalVolume(solidWorld,  //its solid
                                     H2O,  //its material

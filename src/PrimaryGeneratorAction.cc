@@ -17,14 +17,14 @@ PrimaryGeneratorAction::PrimaryGeneratorAction()
     gun = new G4ParticleGun();
     pPrimaryMessenger = new PrimaryGeneratorMessenger(this);
 
-    //Set the primary particle origin position according to the size of the voxel, so it starts on the edge
-    G4double sideLength = ((DetectorConstruction*)(G4RunManager::GetRunManager()->GetUserDetectorConstruction()))->GetSideLength();
-    gun->SetParticlePosition(G4ThreeVector(0,0,sideLength/2));
+    //Set the primary particle origin position to 0,0,0. 
+    //Note that the box around the particle gets shifted in the DetectorConstruction
+    gun->SetParticlePosition(G4ThreeVector(0,0,0));
 
     //Set appropriate direction (down in Z axis)
     gun->SetParticleMomentumDirection(G4ThreeVector(0,0,-1));
 
-    //Other particle properties are set by the messenger
+    //Other particle properties are set by the messenger in the Set functions below
 }
 
 PrimaryGeneratorAction::~PrimaryGeneratorAction()
@@ -35,11 +35,10 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction()
 
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event)
 {
-    //CheckInitialized(); //Check the appropriate parameters have been passed to the Primary Generator from the messenger
     gun->GeneratePrimaryVertex(event);
 }
 
-void PrimaryGeneratorAction::CheckInitialized()
+void PrimaryGeneratorAction::CheckInitialized() //This gets called from the RunACtion
 {
     if (particleTypeInitialized != true)
     {
@@ -63,14 +62,12 @@ void PrimaryGeneratorAction::SetPrimaryParticleType(G4String name)
     G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
     G4ParticleDefinition* particle = particleTable->FindParticle(name);
     gun->SetParticleDefinition(particle);
-
     particleTypeInitialized = true;
 }
 
 void PrimaryGeneratorAction::SetPrimaryEnergy(G4double energy)
 {
     gun->SetParticleEnergy(energy);
-
     energyInitialized = true;
 }
 
