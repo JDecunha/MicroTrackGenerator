@@ -10,16 +10,16 @@ class G4UIcmdWithAString;
 
 class PrimaryGeneratorMessenger : public G4UImessenger
 {
-	public:
-  		PrimaryGeneratorMessenger(PrimaryGeneratorAction* primary_action);
-  		virtual ~PrimaryGeneratorMessenger();
+  public:
+	PrimaryGeneratorMessenger(PrimaryGeneratorAction* primary_action);
+	virtual ~PrimaryGeneratorMessenger();
 
-  		void SetNewValue(G4UIcommand* command, G4String value);
+	void SetNewValue(G4UIcommand* command, G4String value);
                          
-	private:
-		PrimaryGeneratorAction* pPrimaryGenerator{};
+  private:
+	PrimaryGeneratorAction* pPrimaryGenerator{};
 
-		G4UIdirectory* primary_directory{};
-		G4UIcmdWithAString* primary_type{};
-		G4UIcmdWithADoubleAndUnit* primary_energy{};
+	G4UIdirectory* primary_directory{};
+	G4UIcmdWithAString* primary_type{};
+	G4UIcmdWithADoubleAndUnit* primary_energy{};
 };

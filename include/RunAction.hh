@@ -11,28 +11,28 @@ class PrimaryGeneratorAction;
 
 class RunAction : public G4UserRunAction
 {
-public:
-  RunAction();
-  virtual ~RunAction();
+  public:
+    RunAction();
+    virtual ~RunAction();
 
-  virtual void BeginOfRunAction(const G4Run*);
-  virtual void EndOfRunAction(const G4Run*);
+    virtual void BeginOfRunAction(const G4Run*);
+    virtual void EndOfRunAction(const G4Run*);
 
-private:
-  void CheckPrimaryGeneratorInitialized();
-  void CreateTFile();
-  void InitializeTTrees();
-  void WriteTFileInformationFields();
+  private:
+    void CheckPrimaryGeneratorInitialized();
+    void CreateTFile();
+    void InitializeTTrees();
+    void WriteTFileInformationFields();
 
-  void BeginMaster(const G4Run*);
-  void EndMaster(const G4Run*);
+    void BeginMaster(const G4Run*);
+    void EndMaster(const G4Run*);
 
-  void BeginWorker(const G4Run*);
-  void EndWorker(const G4Run*);
+    void BeginWorker(const G4Run*);
+    void EndWorker(const G4Run*);
 
-  TFile *pTrackOutputFile{};
-  
-  PrimaryGeneratorAction *pPrimaryGeneratorAction{};
-  SteppingAction *pSteppingAction{};
-  EventAction *pEventAction{};
+    TFile *pTrackOutputFile{};
+    
+    PrimaryGeneratorAction *pPrimaryGeneratorAction{};
+    SteppingAction *pSteppingAction{};
+    EventAction *pEventAction{};
 };

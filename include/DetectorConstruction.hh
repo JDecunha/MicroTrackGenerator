@@ -7,7 +7,7 @@ class G4VPhysicalVolume;
 
 class DetectorConstruction : public G4VUserDetectorConstruction
 {
-public:
+  public:
 	DetectorConstruction();
 	virtual ~DetectorConstruction();
 
@@ -16,7 +16,7 @@ public:
 	void SetSideLength(const G4double& sidelength);
 	inline const G4double& GetSideLength() const { return sideLength; } 
                          
-private:
+  private:
 	G4VPhysicalVolume* ConstructDetector();    
 
     DetectorConstructionMessenger* pMessenger{};

@@ -8,17 +8,17 @@ class G4UIcmdWithAString;
 
 class PhysicsListMessenger : public G4UImessenger
 {
-	public:
-  		PhysicsListMessenger(PhysicsList* physics_list);
-  		~PhysicsListMessenger() override;
+  public:
+	PhysicsListMessenger(PhysicsList* physics_list);
+	~PhysicsListMessenger() override;
 
-  		void SetNewValue(G4UIcommand* command, G4String value) override;
+	void SetNewValue(G4UIcommand* command, G4String value) override;
 
-  		const G4String& GetPhysicsListString() const { return _physicsListString; };
+	const G4String& GetPhysicsListString() const { return _physicsListString; };
                          
-	private:
-		G4String _physicsListString{};
-		PhysicsList* _PhysicsList{};
-		G4UIdirectory* _physics_directory{};
-		G4UIcmdWithAString* _physics_list_cmd{};	
+  private:
+	G4String _physicsListString{};
+	PhysicsList* _PhysicsList{};
+	G4UIdirectory* _physics_directory{};
+	G4UIcmdWithAString* _physics_list_cmd{};	
 };

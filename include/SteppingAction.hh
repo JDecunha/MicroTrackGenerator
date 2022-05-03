@@ -10,26 +10,26 @@ class TTree;
 
 class SteppingAction : public G4UserSteppingAction
 {
-	public:
-	  SteppingAction();
-	  ~SteppingAction();
-	  
-	  void UserSteppingAction(const G4Step*);
+  public:
+	SteppingAction();
+	~SteppingAction();
 
-	private:
-		friend class RunAction;
-		friend class EventAction;
+	void UserSteppingAction(const G4Step*);
 
-		void InitializeTTree();
-		long long ResetEdepsThisEvent();
+  private:
+	friend class RunAction;
+	friend class EventAction;
 
-		//Variables needed to populate the TTrees
-		long long edepsThisEvent{};
-		G4double x,y,z,edep{}; 
-		G4StepPoint* preStep{};
-		TTree *pTrackOutputTree{};
+	void InitializeTTree();
+	long long ResetEdepsThisEvent();
 
-		//Flags
-		G4bool fTTreeInitialized{};	
+	//Variables needed to populate the TTrees
+	long long edepsThisEvent{};
+	G4double x,y,z,edep{}; 
+	G4StepPoint* preStep{};
+	TTree *pTrackOutputTree{};
+
+	//Flags
+	G4bool fTTreeInitialized{};	
 };
 

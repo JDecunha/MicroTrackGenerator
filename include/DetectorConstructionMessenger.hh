@@ -8,14 +8,14 @@ class G4UIcmdWithADoubleAndUnit;
 
 class DetectorConstructionMessenger : public G4UImessenger
 {
-	public:
-  		DetectorConstructionMessenger(DetectorConstruction* detector_construction);
-  		virtual ~DetectorConstructionMessenger();
+  public:
+	DetectorConstructionMessenger(DetectorConstruction* detector_construction);
+	virtual ~DetectorConstructionMessenger();
 
-  		void SetNewValue(G4UIcommand* command, G4String value);
+	void SetNewValue(G4UIcommand* command, G4String value);
                          
-	private:
-		DetectorConstruction* pDetectorConstruction{};
-		G4UIdirectory* geometry_directory{};
-		G4UIcmdWithADoubleAndUnit* geometry_voxel_sidelength{};
+  private:
+	DetectorConstruction* pDetectorConstruction{};
+	G4UIdirectory* geometry_directory{};
+	G4UIcmdWithADoubleAndUnit* geometry_voxel_sidelength{};
 };
