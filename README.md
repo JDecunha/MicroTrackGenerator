@@ -1,4 +1,4 @@
-# MicroTrackGenerator (v0.9.1)
+# MicroTrackGenerator (v0.9.2)
 An application to calculate the trajectories and energy deposition events of tracks of ionizing radiation for uses in computational microdosimetry.
 ## Installation and Requirements
 The required software and libraries to compile MicroTrackGenerator include:
@@ -42,6 +42,10 @@ Specify the number of threads you would like the simulation to run on. If your G
 
 **Macro File**
 
+**physics/list [name]** (mandatory)
+
+Specify the physics list to be used. Currently Geant-DNA Option 2 ("DNA2") and Geant4-DNA Vanilla ("DNA0") are the only two options.
+
 **geometry/voxelSideLength [value] [unit]** (mandatory)
 
 Specify the side length of the cubic voxel within which the generated tracks are constrained. A value and length unit are required.
@@ -58,6 +62,9 @@ Specify the initial energy of the primary particle you create. Requires a value 
 
 A macro file for MicroTrackGenerator to record 1 MeV proton tracks in a 3 mm cubic side length voxel is provided:
 ```
+#Set physics list
+	/physics/list DNA2
+
 #Set verbosity
 	/tracking/verbose 0
 	/process/em/verbose 0
@@ -102,13 +109,15 @@ In addition to all of the necessary commands for your scheduler, the template sh
 ### Building with the runTools
 Once your template has been created and _configure_ has been invoked, you are ready to call _build_. The build procedure will prompt you to give the required inputs one at a time, in order to generate the macro and run files. _build_ allows you to generate a single macro and run file pair, or a series of macro files for a single particle at various energies. This is useful if you desire to generate a library of tracks for a particle type at many energies.
 
+_Note:_ The existing macro file template specifies "DNA2" as the default physics list. If you want to change this, please modify the runTools/src/templates.py file for the physics list of your choice.
+
 ## Description
 
 MicroTrackGenerator has been developed to be as lightweight and simple as possible. Wherever possible, end-user control has been removed to prevent the user from running the software in an inappropriate way. The purpose of the software is to generate a track library for a given source of ionizing radiation at a series of  energies. Individual components of the software are described below.
 
 ### Geometry
 
-All tracks originate from the center of the side of a cubic voxel whose size is specified by voxelSideLength, as shown in Figure 1. The initial momentum of all primary particles is directed into the voxel. When any particle in the track reaches the edge of the voxel it is terminated. 
+All tracks originate from (0,0,0) which lies in the middle of the side of a cube. The cube is referred to as a voxel. The cube side length is specified by voxelSideLength, as shown in Figure 1. The initial momentum of all primary particles is in the -Z direction, into the voxel. When any particle in the track reaches the edge of the voxel it is terminated. 
 
 <p align="center">
 <img src="/docs/Track_Voxel_Box.jpg" width="500">
@@ -121,7 +130,7 @@ The rationale behind the use of a voxel geometry is to prevent needless track in
 
 ### Physics
 
-The physics model Geant4DNA_Option2 is used for this application. Users are directed to the Geant4DNA collaboration's website (http://geant4-dna.in2p3.fr/styled-3/styled-8/index.html) and publications for further information on the physics model. This physics model was chosen in order to determine the most accurate information for nanometer scale energy depositions from particles of ionizing radiation, while also spanning an energy range appropriate for medical applications. If you attempt to simulate a primary particle which is not modelled by the Geant4DNA model or does not fall within the specified energy range (i.e. electrons of 1 MeV or greater, protons of 100 MeV or greater) then the software will not export any track information.
+The user can specific Geant4_DNAOption2 or Geant4_DNA as physics models for this application. Geant4DNA_Option2 is the default. Users are directed to the Geant4DNA collaboration's website (http://geant4-dna.in2p3.fr/styled-3/styled-8/index.html) and publications for further information on the physics model. Geant4 DNA was chosen in order to determine the most accurate information for nanometer scale energy depositions from particles of ionizing radiation, while also spanning an energy range appropriate for medical applications. If you attempt to simulate a primary particle which is not modelled by Geant4DNA or does not fall within the specified energy range (i.e. electrons of 1 MeV or greater, protons of 100 MeV or greater) then the software will not export any track information.
 
 ### Random Seeding
 
