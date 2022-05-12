@@ -1,7 +1,10 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
-macro_template = """#Set verbosity
+macro_template = """#Set physics list
+	/physics/list DNA2
+
+#Set verbosity
 	/tracking/verbose 0
 	/process/em/verbose 0
 	/run/verbose 1
