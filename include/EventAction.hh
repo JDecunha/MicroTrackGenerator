@@ -19,7 +19,7 @@ class EventAction : public G4UserEventAction
 
 	void InitializeEventIndexTree();
 
-	long long indexEntry{};
+	unsigned long long indexEntry{};
 	//provides a series of indices for which entry in Tracks TTree is the end of an event
 	TTree *pEventIndexTree{}; 
 	//Flags

@@ -20,7 +20,7 @@ void EventAction::InitializeEventIndexTree()
     pEventIndexTree = new TTree("Track index","Entry number for the end of each track");
 
     //Configure the branch
-    pEventIndexTree->Branch("index",&indexEntry,"index/G"); //G is Long64_t i.e. long long
+    pEventIndexTree->Branch("index",&indexEntry,"index/l"); //l is unsigned 64 bit long (i.e. unsigned long long)
 
     fInitialized = true;
   }
