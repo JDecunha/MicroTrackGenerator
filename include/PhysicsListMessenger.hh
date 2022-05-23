@@ -14,7 +14,7 @@ class PhysicsListMessenger : public G4UImessenger
 
 	void SetNewValue(G4UIcommand* command, G4String value) override;
 
-	const G4String& GetPhysicsListString() const { return _physicsListString; };
+	inline const G4String& GetPhysicsListString() const { return _physicsListString; };
                          
   private:
 	G4String _physicsListString{};
