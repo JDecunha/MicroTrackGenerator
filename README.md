@@ -1,4 +1,4 @@
-# MicroTrackGenerator (v0.9.2)
+# MicroTrackGenerator (v1.0)
 An application to calculate the trajectories and energy deposition events of tracks of ionizing radiation for uses in computational microdosimetry.
 ## Installation and Requirements
 The required software and libraries to compile MicroTrackGenerator include:
