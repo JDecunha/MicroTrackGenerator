@@ -35,6 +35,16 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction()
 
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event)
 {
+
+    //Randomly shift the energy so that it spans the entire energy bin rather than being monoenergetic
+    double energyRandomTransform = G4UniformRand() - 0.5;
+    energyRandomTransform = energyRandomTransform*_energyBinWidth; //Scale so it spans the energy bin we want it to
+
+    //Set the energy
+    gun->SetParticleEnergy(_energy+energyRandomTransform);
+    G4cout << _energy+energyRandomTransform << G4endl;
+
+    //Shoot!
     gun->GeneratePrimaryVertex(event);
 }
 
@@ -67,8 +77,13 @@ void PrimaryGeneratorAction::SetPrimaryParticleType(const G4String& name)
 
 void PrimaryGeneratorAction::SetPrimaryEnergy(const G4double& energy)
 {
-    gun->SetParticleEnergy(energy);
+    _energy = energy; 
     energyInitialized = true;
+}
+
+void PrimaryGeneratorAction::SetPrimaryEnergyBinWidth(const G4double& binWidth)
+{
+    _energyBinWidth = binWidth;
 }
 
 // Methods for accessing data fields of the generator
@@ -80,7 +95,12 @@ G4String PrimaryGeneratorAction::GetPrimaryName() const
 
 G4double PrimaryGeneratorAction::GetPrimaryEnergy() const
 {
-	return gun->GetParticleEnergy()/MeV;
+	return _energy;
+}
+
+G4double PrimaryGeneratorAction::GetPrimaryEnergyBinWidth() const
+{
+    return _energyBinWidth;
 }
 
 G4ThreeVector PrimaryGeneratorAction::GetParticleOrigin() const

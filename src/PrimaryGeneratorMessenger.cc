@@ -23,6 +23,12 @@ PrimaryGeneratorMessenger::PrimaryGeneratorMessenger(PrimaryGeneratorAction* pri
     primary_energy->SetParameterName("particle energy", false);
     primary_energy->SetUnitCategory("Energy");
     primary_energy->AvailableForStates(G4State_Idle);
+
+    primary_energy_bin_width = new G4UIcmdWithADoubleAndUnit("/primary/energyBinWidth", this);
+    primary_energy_bin_width->SetGuidance("Set the primary particle energy bin width.");
+    primary_energy_bin_width->SetParameterName("particle energy bin width", false);
+    primary_energy_bin_width->SetUnitCategory("Energy");
+    primary_energy_bin_width->AvailableForStates(G4State_Idle);
 }
 
 
@@ -42,6 +48,10 @@ void PrimaryGeneratorMessenger::SetNewValue(G4UIcommand* command, G4String value
     if (command == primary_energy)
     {
       pPrimaryGenerator->SetPrimaryEnergy(primary_energy->GetNewDoubleValue(value.c_str()));
+    }
+    if (command == primary_energy_bin_width)
+    {
+      pPrimaryGenerator->SetPrimaryEnergyBinWidth(primary_energy->GetNewDoubleValue(value.c_str()));
     }
 }
 

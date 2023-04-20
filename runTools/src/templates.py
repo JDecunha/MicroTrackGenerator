@@ -18,6 +18,7 @@ macro_template = """#Set physics list
 #source information
 	/primary/type {particle}
 	/primary/energy {energy} MeV
+	/primary/energyBinWidth {energybinwidth} MeV
 
 /run/beamOn {nbeamon} """
 

@@ -22,4 +22,5 @@ class PrimaryGeneratorMessenger : public G4UImessenger
 	G4UIdirectory* primary_directory{};
 	G4UIcmdWithAString* primary_type{};
 	G4UIcmdWithADoubleAndUnit* primary_energy{};
+	G4UIcmdWithADoubleAndUnit* primary_energy_bin_width{};
 };

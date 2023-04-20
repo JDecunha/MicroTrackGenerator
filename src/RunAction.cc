@@ -156,6 +156,7 @@ void RunAction::WriteTFileInformationFields()
   //Pull properties about primary particles
   TNamed tnPrimaryParticle = TNamed("Primary particle",pPrimaryGeneratorAction->GetPrimaryName());
   TNamed tnPrimaryEnergy = TNamed("Primary energy [MeV]",std::to_string(pPrimaryGeneratorAction->GetPrimaryEnergy()));
+  TNamed tnPrimaryEnergyBinWidth = TNamed("Primary energy bin width [MeV]",std::to_string(pPrimaryGeneratorAction->GetPrimaryEnergyBinWidth()));
   TNamed tnParticleOrigin = TNamed("Primary particle origin [mm]",originString);
   TNamed tnParticleInitialDirection = TNamed("Primary particle direction [x,y,z]",directionString);
   TNamed tnVoxelSideLength = TNamed("Voxel side length [mm]",std::to_string(sideLength));
@@ -166,6 +167,7 @@ void RunAction::WriteTFileInformationFields()
   //Write properties to the currently open TFile
   tnPrimaryParticle.Write();
   tnPrimaryEnergy.Write();
+  tnPrimaryEnergyBinWidth.Write();
   tnParticleOrigin.Write();
   tnParticleInitialDirection.Write();
   tnVoxelSideLength.Write();

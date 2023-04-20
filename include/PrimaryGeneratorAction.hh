@@ -18,11 +18,13 @@ class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 
     G4String GetPrimaryName() const;
     G4double GetPrimaryEnergy() const;
+    G4double GetPrimaryEnergyBinWidth() const;
     G4ThreeVector GetParticleOrigin() const;
     G4ThreeVector GetParticleInitialDirection() const;
 
     void SetPrimaryParticleType(const G4String& name);
     void SetPrimaryEnergy(const G4double& energy);
+    void SetPrimaryEnergyBinWidth(const G4double& binWidth);
 
   private:
     friend class RunAction;
@@ -32,6 +34,8 @@ class PrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
     G4ParticleGun* gun{};
     PrimaryGeneratorMessenger* pPrimaryMessenger{};
 
+    double _energy{};
+    double _energyBinWidth{};
     G4bool energyInitialized{};
     G4bool particleTypeInitialized{};
 };

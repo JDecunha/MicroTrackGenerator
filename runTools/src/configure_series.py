@@ -82,7 +82,7 @@ def generate_macrofile_series(sidelength,particle,energy_lowlim,energy_highlim,e
         utils.make_directory("../output/%s/%sMeV" % (particle,energy))
         
         # Render the template
-        macro_template_filled = templates.macro_template.format(sidelength=sidelength,particle=particle,energy=energy,nbeamon=nparticles)
+        macro_template_filled = templates.macro_template.format(sidelength=sidelength,particle=particle,energy=energy,energybinwidth=energy_spacing,nbeamon=nparticles)
     
         with file("../macros/%s.mac" % name, "w") as f:
             f.write(macro_template_filled)

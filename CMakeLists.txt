@@ -26,12 +26,12 @@ add_executable(MicroTrackGenerator MicroTrackGenerator.cc)
 #locate our project source files and make a library
 	file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cc)
 	add_library(src STATIC ${sources})
-	target_include_directories(src PUBLIC ${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/extern/include)
+	target_include_directories(src PUBLIC ${PROJECT_SOURCE_DIR}/include ${PROJECT_SOURCE_DIR}/extern/include ${Geant4_INCLUDE_DIR})
 
 #locate the extern source files and make a library
 	file(GLOB external ${PROJECT_SOURCE_DIR}/extern/src/*.cc)
 	add_library(extern STATIC ${external})
-	target_include_directories(extern PUBLIC ${PROJECT_SOURCE_DIR}/extern/include)
+	target_include_directories(extern PUBLIC ${PROJECT_SOURCE_DIR}/extern/include ${Geant4_INCLUDE_DIR})
 
 ###
 ### Link MicroTrackGenerator with libraries

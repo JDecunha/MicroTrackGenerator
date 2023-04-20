@@ -1,5 +1,5 @@
 #!/bin/bash
-﻿
+
 #BSUB -W {walltime_request}
 #BSUB -o /rsrch3/scratch/radphys_rsch/jdecunha/MicroTrackGenerator/run_logfiles
 #BSUB -cwd /rsrch3/scratch/radphys_rsch/jdecunha/MicroTrackGenerator/runFiles
