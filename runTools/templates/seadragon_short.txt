@@ -1,8 +1,8 @@
 #!/bin/bash
 ﻿
 #BSUB -W {walltime_request}
-#BSUB -o /rsrch3/home/radphys_rsch/jdecunha/MicroTrackGenerator/run_logfiles
-#BSUB -cwd /rsrch3/home/radphys_rsch/jdecunha/MicroTrackGenerator/runFiles
+#BSUB -o /rsrch3/scratch/radphys_rsch/jdecunha/MicroTrackGenerator/run_logfiles
+#BSUB -cwd /rsrch3/scratch/radphys_rsch/jdecunha/MicroTrackGenerator/runFiles
 #BSUB -q short
 #BSUB -M 165
 #BSUB -R rusage[mem=165]
