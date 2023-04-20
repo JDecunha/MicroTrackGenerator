@@ -1,4 +1,4 @@
-# MicroTrackGenerator (v0.9.2)
+# MicroTrackGenerator (v1.0)
 An application to calculate the trajectories and energy deposition events of tracks of ionizing radiation for uses in computational microdosimetry.
 ## Installation and Requirements
 The required software and libraries to compile MicroTrackGenerator include:
@@ -152,7 +152,7 @@ The "Tracks" TTree encondes x, y, z position in nanometers as well as energy dep
 
 ## Determining Microdosimetric Quantities from Track Library
 
-At this time I am developing software to take the tracks generated from MicroTrackGenerator and superimpose them in volumes in order to efficiently calculate microdosimetric quantities. This software will be shared in its own respository once I believe it is at a sufficient stage of development. This readme will be updated to direct you to that software once it has been released. 
+See the project, SuperTrack (https://github.com/JDecunha/SuperTrack) for instructions on how to take the tracks developed with MicroTrackGenerator and determine microdosimetric spectra.
 
 ## Software License
 
