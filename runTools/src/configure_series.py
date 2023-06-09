@@ -39,10 +39,28 @@ def determine_series_properties(templateString):
    energyhighCommand.AddCondition(commandcondition.GreaterThanCondition(energy_lowlim))
    energy_highlim = float(energyhighCommand.GetInput())
    
-   energyspacingCommand = command.Command("Input spacing between particle energy of series in MeV: ")
-   energyspacingCommand.AddCondition(commandcondition.FloatCondition())
-   energy_spacing = float(energyspacingCommand.GetInput())
-        
+   spacingCommand = command.Command("Input spacing type between energies (lin or log): ")
+   spacingCommand.AddCondition(commandcondition.StringCondition())
+   spacingType = str(spacingCommand.GetInput())
+   
+   energyString = ""
+   if spacingType == "lin":
+       energyString = "Input spacing between particle energy of series in MeV: "
+   elif spacingType == "log":
+       energyString = "Input number of discrete energies to simulate: "
+   else:
+       raise Exception("You made a typo. Insert 25 cents to continue.")
+   
+   energyspacingCommand = command.Command(energyString)
+   energy_spacing = 0.
+   
+   if spacingType == "lin":
+       energyspacingCommand.AddCondition(commandcondition.FloatCondition())
+       energy_spacing = float(energyspacingCommand.GetInput())
+   elif spacingType == "log":
+       energyspacingCommand.AddCondition(commandcondition.IntCondition())
+       energy_spacing = int(energyspacingCommand.GetInput())
+   
    nbeamonCommand = command.Command("Input number of primary particles to generate: ")
    nbeamonCommand.AddCondition(commandcondition.IntCondition())
    nbeamon = int(nbeamonCommand.GetInput())
@@ -61,16 +79,23 @@ def determine_series_properties(templateString):
    fileDirCommand.AddCondition(commandcondition.StringCondition())
    jobfiledir = "../" + str(fileDirCommand.GetInput())
            
-   macro_filenames = generate_macrofile_series(sidelength,particle,energy_lowlim,energy_highlim,energy_spacing,nbeamon)
-   generate_runfile_series(particle,energy_lowlim,energy_highlim,energy_spacing,macro_filenames,walltime,jobname,jobfiledir,templateString)
+   macro_filenames = generate_macrofile_series(sidelength,particle,energy_lowlim,energy_highlim,energy_spacing,nbeamon,spacingType)
+   generate_runfile_series(particle,energy_lowlim,energy_highlim,energy_spacing,macro_filenames,walltime,jobname,jobfiledir,templateString,spacingType)
    
    print "build complete."        
    
    return  1
 
-def generate_macrofile_series(sidelength,particle,energy_lowlim,energy_highlim,energy_spacing,nparticles):
+def generate_macrofile_series(sidelength,particle,energy_lowlim,energy_highlim,energy_spacing,nparticles,spacingType):
     
-    energy_linspace = np.linspace(energy_lowlim,energy_highlim,float(energy_highlim-energy_lowlim)/float(energy_spacing)+1)
+    
+    energy_linspace = []
+    
+    if spacingType == "lin":
+        energy_linspace = np.linspace(energy_lowlim,energy_highlim,float(energy_highlim-energy_lowlim)/float(energy_spacing)+1)
+    elif spacingType == "log":
+        energy_linspace = np.geomspace(energy_lowlim,energy_highlim,energy_spacing)
+        
     macro_filenames = []
     
     for i in energy_linspace:
@@ -90,7 +115,7 @@ def generate_macrofile_series(sidelength,particle,energy_lowlim,energy_highlim,e
 
     return macro_filenames
 
-def generate_runfile_series(particle,energy_lowlim,energy_highlim,energy_spacing,macronames,walltime,jobname,jobdir,templateString):
+def generate_runfile_series(particle,energy_lowlim,energy_highlim,energy_spacing,macronames,walltime,jobname,jobdir,templateString,spacingType):
         
     try:
         os.mkdir(jobdir)
@@ -100,7 +125,12 @@ def generate_runfile_series(particle,energy_lowlim,energy_highlim,energy_spacing
         else: #any other type of error then raise it
             raise
             
-    energy_linspace = np.linspace(energy_lowlim,energy_highlim,float(energy_highlim-energy_lowlim)/float(energy_spacing)+1)
+    energy_linspace = []
+    
+    if spacingType == "lin":
+        energy_linspace = np.linspace(energy_lowlim,energy_highlim,float(energy_highlim-energy_lowlim)/float(energy_spacing)+1)
+    elif spacingType == "log":
+        energy_linspace = np.geomspace(energy_lowlim,energy_highlim,energy_spacing)
     
     with file("%s/%s%s" % (jobdir,jobname,templateString[1]) , "w") as f:
         seadragon_template_filled = templateString[0].format(walltime_request=walltime,job_name=jobname,jobdir=jobdir,run_command = "")
