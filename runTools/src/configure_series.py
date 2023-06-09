@@ -108,6 +108,10 @@ def generate_macrofile_series(sidelength,particle,energy_lowlim,energy_highlim,e
         
         # Render the template
         macro_template_filled = templates.macro_template.format(sidelength=sidelength,particle=particle,energy=energy,energybinwidth=energy_spacing,nbeamon=nparticles)
+        
+        if spacingType == "log":
+            macro_template_filled = templates.macro_template.format(sidelength=sidelength,particle=particle,energy=energy,energybinwidth=0.,nbeamon=nparticles)
+            
     
         with file("../macros/%s.mac" % name, "w") as f:
             f.write(macro_template_filled)
