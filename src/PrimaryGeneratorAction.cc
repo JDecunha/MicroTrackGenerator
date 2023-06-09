@@ -42,7 +42,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event)
 
     //Set the energy
     gun->SetParticleEnergy(_energy+energyRandomTransform);
-    G4cout << _energy+energyRandomTransform << G4endl;
+    // G4cout << _energy+energyRandomTransform << G4endl;
 
     //Shoot!
     gun->GeneratePrimaryVertex(event);
