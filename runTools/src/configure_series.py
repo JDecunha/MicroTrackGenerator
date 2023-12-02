@@ -112,7 +112,7 @@ def generate_macrofile_series(sidelength,particle,energy_lowlim,energy_highlim,e
             nparticles = 10000
         elif i < 40:
             nparticles = 100000
-        elif i < 100
+        elif i < 100:
             nparticles = 200000
         elif i < 310:
             nparticles = 500000
