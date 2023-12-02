@@ -10,6 +10,7 @@ import os
 import numpy as np
 import random
 import sys
+import math
 
 """
 Created on Fri Aug 13 13:41:33 2021
@@ -92,7 +93,7 @@ def generate_macrofile_series(sidelength,particle,energy_lowlim,energy_highlim,e
     energy_linspace = []
     
     if spacingType == "lin":
-        energy_linspace = np.linspace(energy_lowlim,energy_highlim,float(energy_highlim-energy_lowlim)/float(energy_spacing)+1)
+        energy_linspace = np.linspace(energy_lowlim,energy_highlim,math.ceil(float(energy_highlim-energy_lowlim)/float(energy_spacing))+1.)
     elif spacingType == "log":
         energy_linspace = np.geomspace(energy_lowlim,energy_highlim,energy_spacing)
         
@@ -132,7 +133,7 @@ def generate_runfile_series(particle,energy_lowlim,energy_highlim,energy_spacing
     energy_linspace = []
     
     if spacingType == "lin":
-        energy_linspace = np.linspace(energy_lowlim,energy_highlim,float(energy_highlim-energy_lowlim)/float(energy_spacing)+1)
+        energy_linspace = np.linspace(energy_lowlim,energy_highlim,math.ceil(float(energy_highlim-energy_lowlim)/float(energy_spacing))+1.)
     elif spacingType == "log":
         energy_linspace = np.geomspace(energy_lowlim,energy_highlim,energy_spacing)
     
