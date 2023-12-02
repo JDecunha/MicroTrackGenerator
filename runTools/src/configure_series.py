@@ -105,6 +105,16 @@ def generate_macrofile_series(sidelength,particle,energy_lowlim,energy_highlim,e
         utils.make_directory("../output/")
         utils.make_directory("../output/%s" % particle)
         utils.make_directory("../output/%s/%sMeV" % (particle,energy))
+
+        #Just do a by hand setting of nparticles
+        if i < 1:
+            nparticles = 10000
+        elif i < 40:
+            nparticles = 100000
+        elif i < 100
+            nparticles = 200000
+        elif i < 310:
+            nparticles = 500000
         
         # Render the template
         macro_template_filled = templates.macro_template.format(sidelength=sidelength,particle=particle,energy=energy,energybinwidth=energy_spacing,nbeamon=nparticles)
